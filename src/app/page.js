@@ -2,6 +2,7 @@
 import "./styles.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // ✅ 추가
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -25,7 +26,7 @@ export default function Home() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "20px" }}>
-    import Image from "next/image"; // ✅ 추가
+
 
 <Image src="/logo3.png" alt="로고" className="logo" width={300} height={100} />
 
