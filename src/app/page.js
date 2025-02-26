@@ -25,7 +25,9 @@ export default function Home() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <img src="/logo3.png" alt="로고" className="logo" />
+    import Image from "next/image"; // ✅ 추가
+
+<Image src="/logo3.png" alt="로고" className="logo" width={300} height={100} />
 
       <div className="container">
         {/* ✅ 입력창 + 버튼을 컨테이너 하단으로 이동 */}

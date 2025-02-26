@@ -4,8 +4,17 @@ import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../firebase"; // Firestore 연결
 import { collection, addDoc } from "firebase/firestore";
+import { Suspense } from "react"; // ✅ Suspense 추가
 
 export default function Challenge() {
+    return (
+      <Suspense fallback={<div>로딩 중...</div>}> {/* ✅ Suspense로 감싸기 */}
+        <ChallengeContent />
+      </Suspense>
+    );
+}
+  
+function ChallengeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const name = searchParams.get("name");
