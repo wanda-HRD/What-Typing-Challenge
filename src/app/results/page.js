@@ -1,10 +1,17 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { db } from "@/firebase"; // Firestore 연결
-import { collection, query, orderBy, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { Suspense } from "react"; // ✅ Suspense 추가
 
-export default function Results() {
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>  {/* ✅ Suspense로 감싸기 */}
+      <ResultsContent />
+    </Suspense>
+  );
+}
+
+
+function ResultsContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const time = parseFloat(searchParams.get("time")); // 문자열을 숫자로 변환
