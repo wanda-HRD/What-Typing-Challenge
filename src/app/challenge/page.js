@@ -20,7 +20,7 @@ function ChallengeContent() {
   const name = searchParams.get("name");
 
   // ✅ 타이핑할 문구
-  const textToType = "WHAT 타이핑 챌린지를 환영합니다! 정확하게 입력해 보세요!";
+  const textToType = "WHAT 타이핑 챌린지에 오신 것을 환영합니다! 정확하게 입력해 보세요!";
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [completionTime, setCompletionTime] = useState(null);
@@ -51,8 +51,15 @@ function ChallengeContent() {
   return (
     <div style={{ textAlign: "center", marginTop: "50px", color: "white" }}>
       <h1>🚀 WHAT 타이핑 챌린지 시작! 🚀</h1>
-      <p>안녕하세요, <strong>{name}</strong> 님! 아래 문장을 빠르고 정확하게 입력하세요!⌨️</p>
-        <p>타이핑을 시작하면 시간이 카운팅됩니다.</p>
+      <p style={{ marginBottom: "15px" }}>
+  안녕하세요, <strong>{name}</strong> 님! 아래 문장을 빠르고 정확하게 입력하세요!⌨️
+</p>
+
+<p style={{ marginBottom: "15px" }}>타이핑을 시작하면 시간이 카운팅됩니다.</p>
+
+<p style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px" }}>
+  ▼제시문▼
+</p>
 
       {/* ✅ 타이핑할 문구 */}
       <p style={{ fontSize: "20px", fontWeight: "bold" }}>
