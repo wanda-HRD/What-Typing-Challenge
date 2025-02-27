@@ -1,6 +1,9 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react"; // ✅ Suspense 추가
+import { db } from "../../firebase"; // ✅ Firestore 연결
+import { collection, query, orderBy, getDocs } from "firebase/firestore"; // ✅ Firestore 관련 함수 추가
+
 
 export default function ResultsPage() {
   return (
