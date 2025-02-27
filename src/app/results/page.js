@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react"; // ✅ useState, useEffect 추가
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react"; // ✅ Suspense 추가
 import { db } from "../../firebase"; // ✅ Firestore 연결
