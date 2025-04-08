@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react"; // ✅ useEffect 제거!
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -19,6 +19,14 @@ function ChallengeContent() {
   const router = useRouter();
   const name = searchParams.get("name");
 
+  // ✅ 페이지 진입 시 challenge-page 클래스 추가
+  useEffect(() => {
+    document.body.classList.add("challenge-page");
+    return () => {
+      document.body.classList.remove("challenge-page");
+    };
+  }, []);
+
   const textToType =
     "안녕하세요 지금부터 WHAT 타이핑 챌린지를 시작하겠습니다.";
 
@@ -31,6 +39,7 @@ function ChallengeContent() {
   const handleInputChange = async (e) => {
     const value = e.target.value;
 
+    // ✅ 복붙 방지
     if (e.nativeEvent.inputType === "insertFromPaste") {
       setShowWarning(true);
       setUserInput("");
@@ -41,6 +50,7 @@ function ChallengeContent() {
       setStartTime(Date.now());
     }
 
+    // ✅ 매크로 입력 방지
     if (value.length > 20 && Date.now() - startTime < 500) {
       setShowWarning(true);
       setUserInput("");
@@ -73,7 +83,7 @@ function ChallengeContent() {
         className="challenge-header"
       />
 
-      {/* ✅ 제시문 컨테이너 (컨테이너 배경만 이미지, 내부는 텍스트) */}
+      {/* ✅ 제시문 컨테이너 */}
       <div className="prompt-container">
         <div className="prompt-label"></div>
         <div className="prompt-typing" style={{ userSelect: "none" }}>
@@ -109,7 +119,7 @@ function ChallengeContent() {
         ></button>
       )}
 
-      {/* ✅ 경고 팝업 */}
+      {/* ✅ 조작 방지 경고 */}
       {showWarning && (
         <div className="warning-popup">
           🤖 복사/붙여넣기 또는 비정상 입력은 금지입니다! 진짜 실력으로 승부해 주세요!
