@@ -1,23 +1,20 @@
 "use client";
-import "./styles.css";
+import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image"; // ✅ 추가
 
 export default function Home() {
   const [name, setName] = useState("");
   const router = useRouter();
 
-  // ✅ "시작하기" 버튼 클릭 또는 엔터 키 입력 시 페이지 이동
   const handleStart = () => {
     if (name.trim() === "") {
       alert("이름을 입력하세요!");
       return;
     }
-    router.push(`/challenge?name=${encodeURIComponent(name)}`); // ✅ challenge 페이지로 이동
+    router.push(`/challenge?name=${encodeURIComponent(name)}`);
   };
 
-  // ✅ 엔터 키 입력 시 시작하기 버튼과 동일한 동작 수행
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleStart();
@@ -25,24 +22,32 @@ export default function Home() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4">
+      {/* 로고 */}
+      <Image
+        src="/logo3.png"
+        alt="로고"
+        width={300}
+        height={100}
+        className="mb-8"
+      />
 
-
-<Image src="/logo3.png" alt="로고" className="logo" width={300} height={100} />
-
-      <div className="container">
-        {/* ✅ 입력창 + 버튼을 컨테이너 하단으로 이동 */}
-        <div className="input-container">
-          <input
-            type="text"
-            placeholder="홍길동 또는 홍길동B 형태로 입력하세요"
-            className="input-box"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={handleKeyDown} // ✅ 엔터 키 이벤트 추가
-          />
-          <button className="button" onClick={handleStart}>START</button> {/* ✅ 버튼 클릭 이벤트 추가 */}
-        </div>
+      {/* 입력창 + 버튼 */}
+      <div className="w-full max-w-[600px] flex flex-col sm:flex-row gap-4">
+        <input
+          type="text"
+          placeholder="홍길동 또는 홍길동B 형태로 입력하세요"
+          className="w-full h-14 rounded-md text-center text-lg font-semibold border border-gray-300 shadow-md"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button
+          onClick={handleStart}
+          className="w-full sm:w-40 h-14 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 transition-all"
+        >
+          START
+        </button>
       </div>
     </div>
   );
