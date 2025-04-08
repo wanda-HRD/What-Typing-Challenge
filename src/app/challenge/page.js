@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react"; // ✅ useEffect 제거
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
