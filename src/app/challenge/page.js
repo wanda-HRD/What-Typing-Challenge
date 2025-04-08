@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react"; // ✅ useEffect 제거!
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
