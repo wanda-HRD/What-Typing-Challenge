@@ -26,7 +26,6 @@ function ChallengeContent() {
       document.body.classList.remove("challenge-page");
     };
   }, []);
-
   const textToType =
     "안녕하세요 지금부터 WHAT 타이핑 챌린지를 시작하겠습니다.";
 
