@@ -1,10 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { db } from "../../firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 
 export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <ResultsContent />
+    </Suspense>
+  );
+}
+
+function ResultsContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const time = parseFloat(searchParams.get("time"));
@@ -17,37 +26,36 @@ export default function ResultsPage() {
       const q = query(recordsRef, orderBy("time", "asc"));
       const querySnapshot = await getDocs(q);
 
-      const allRecords = [];
-      let seenNames = new Set();
+      const records = [];
       let rank = 1;
       let userFound = false;
-      let userRankTemp = null;
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        if (data.hidden) return; // ❗ 비노출 데이터 제외
-        allRecords.push({
+
+        // ✅ 비노출된 데이터는 제외
+        if (data.hidden) return;
+
+        records.push({
           name: data.name,
           time: data.time,
           rank: rank,
-          duplicate: seenNames.has(data.name) ? "Y" : "N"
         });
 
-        if (!userFound && data.time >= time && !seenNames.has(data.name)) {
-          userRankTemp = rank;
+        if (!userFound && data.time >= time && data.name === name) {
+          setUserRank(rank);
           userFound = true;
         }
 
-        seenNames.add(data.name);
         rank++;
       });
 
-      setRankings(allRecords.slice(0, 20));
-      setUserRank(userRankTemp || rank);
+      setRankings(records.slice(0, 20));
+      if (!userFound) setUserRank(rank);
     };
 
     fetchRankings();
-  }, [time]);
+  }, [time, name]);
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -72,7 +80,7 @@ export default function ResultsPage() {
 
       <br />
       <button
-        onClick={() => window.location.href = "/"}
+        onClick={() => (window.location.href = "/")}
         className="button"
       >
         다시 도전하기
