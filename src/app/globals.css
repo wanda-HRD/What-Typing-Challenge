@@ -19,3 +19,242 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* 전체 페이지 스타일 */
+body   {background-image: url('/main.png'); /* ✅ 배경 이미지 적용 */
+  background-size: cover; /* ✅ 화면 전체에 맞춤 */
+  background-position: center; /* ✅ 중앙 정렬 */
+  background-repeat: no-repeat; /* ✅ 이미지 반복 안 함 */
+  background-attachment: fixed; /* ✅ 스크롤해도 배경 고정 */
+  }
+  
+  /* ✅ 로고 스타일 */
+  .logo {
+      width: 600px;  /* 크기 조정 */
+      margin: 20px auto;  /* 중앙 정렬 */
+      display: block;
+      margin: 50px auto 0; /* ✅ 위쪽 여백을 늘려서 로고를 아래로 내림 */
+  
+    }
+  
+  
+  
+  
+  /* ✅ 메인 페이지 컨테이너 수정컨테이너 수정 */
+  .container {
+    width: 600px;
+    height: 700px;
+    background-image: url('/container-bg.png');
+    background-size: contain;  /* ✅ 이미지가 짤리지 않도록 contain 사용 */
+    background-repeat: no-repeat;
+    background-position: top center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 20px; /* ✅ 입력창/버튼 위치 아래로 */
+    margin: 0 auto;
+    border-radius: 15px;
+  }
+    
+    /* 제목 스타일 */
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    /* 안내 문구 스타일 */
+    .info-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: gray;
+      margin-top: 10px;
+    }
+    
+  /* ✅ 메인페이지 입력창 + 버튼을 가로로 배치하기 위한 래퍼 */
+  .input-container {
+      display: flex;
+      align-items: center;
+      gap: 13px; /* ✅ 입력창과 버튼 사이 간격 */
+      margin-bottom: 10px; /* ✅ 컨테이너 하단과 간격 조정 */
+  }
+  
+    
+  /* ✅ 메인페이지 입력창 */
+  .input-box {
+    width: 300px;
+    height: 60px;
+    background-image: url('/input-box-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    outline: none;
+  }
+  /* ✅ 메인페이지 버튼 (이미지 전용) */
+  .button {
+    width: 150px;
+    height: 60px;
+    background-image: url('/button-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    /* 텍스트 없음! */
+  }
+  
+   
+    /* ✅ 버튼 효과 */
+    .button:hover {
+      filter: brightness(1.2);
+      transform: scale(1.05);
+    }
+    
+    .button:active {
+      transform: scale(0.95);
+    }
+    
+  /* ✅ 메인페이지 의사항 이미지 가운데 정렬 */
+    .notice-image {
+      display: block;
+      margin: 20px auto;
+      width: 600px;
+      height: auto;
+    }
+  
+  
+  
+    /* 랭킹 리스트 스타일 */
+    .rank-list {
+      text-align: left;
+      display: inline-block;
+      font-size: 18px;
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .rank-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    
+  /* ✅ 챌린지 전체 배경 적용 */
+body {
+  background-image: url('/challenge-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* ✅ 챌린지 전체 래퍼 */
+.challenge-wrapper {
+  max-width: 650px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+/* ✅챌린지 상단 제목 이미지 */
+.challenge-header {
+  width: 100%;
+  max-width: 600px;
+  height: 250px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+/* ✅ 제시문 컨테이너 */
+.prompt-container {
+  width: 100%;
+  max-width: 600px;
+  height: 350px;
+  background-image: url('/prompt-container.png');
+  background-size: cover;
+  background-position: center;
+  margin: 0 auto 15px;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ✅ 작은 제목 영역 */
+.prompt-label {
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 0%;
+}
+
+/* ✅ 실제 제시문 영역 */
+.prompt-typing {
+  height: 300px;
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: bold;
+  overflow-y: auto;
+}
+
+/* ✅ 타이핑 입력창 */
+.typing-area {
+  width: 100%;
+  max-width: 600px;
+  height: 300px;
+  background-image: url('/typing-area.png');
+  background-size: cover;
+  background-position: center;
+  padding: 1%;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  background-color: transparent;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+/* ✅ 결과 버튼 */
+.result-button {
+  width: 150px;
+  height: 60px;
+  background-image: url('/result-button.png');
+  background-size: cover;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* ✅ 경고 팝업 */
+.warning-popup {
+  margin-top: 20px;
+  background-color: #ffe0e0;
+  color: #b00020;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ 드래그 방지 및 복사 방지 */
+.prompt-typing {
+  user-select: none;           /* 텍스트 선택 방지 */
+  -webkit-user-select: none;   /* Safari 대응 */
+  -moz-user-select: none;      /* Firefox 대응 */
+  -ms-user-select: none;       /* IE 대응 */
+}

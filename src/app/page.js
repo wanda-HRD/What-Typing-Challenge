@@ -1,4 +1,5 @@
 "use client";
+import "./styles.css"; // ✅ src/app/styles.css에서 불러옴
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -22,33 +23,41 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      {/* 로고 */}
+    <div style={{ textAlign: "center", marginTop: "20px" }}>
+      {/* ✅ 로고 이미지 */}
       <Image
         src="/logo3.png"
         alt="로고"
-        width={300}
-        height={100}
-        className="mb-8"
+        width={600}
+        height={240}
+        className="logo"
       />
 
-      {/* 입력창 + 버튼 */}
-      <div className="w-full max-w-[600px] flex flex-col sm:flex-row gap-4">
-        <input
-          type="text"
-          placeholder="홍길동 또는 홍길동B 형태로 입력하세요"
-          className="w-full h-14 rounded-md text-center text-lg font-semibold border border-gray-300 shadow-md"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button
-          onClick={handleStart}
-          className="w-full sm:w-40 h-14 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 transition-all"
-        >
-          START
-        </button>
+      {/* ✅ 컨테이너 박스 (참여방법 + 입력/버튼) */}
+      <div className="container">
+        <div className="input-container">
+          <input
+            type="text"
+            placeholder="홍길동 또는 홍길동B 형태로 입력하세요"
+            className="input-box"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+
+          {/* ✅ 텍스트 없는 이미지 버튼 */}
+          <button className="button" onClick={handleStart}>
+            {/* 텍스트 제거 → 배경이미지로만 표시 */}
+          </button>
+        </div>
       </div>
+
+      {/* ✅ 주의사항 이미지 - 가운데 정렬 + 여백 */}
+      <img
+  src="/notice.png"
+  alt="주의사항"
+  className="notice-image"
+/>
     </div>
   );
 }

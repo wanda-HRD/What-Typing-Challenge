@@ -1,56 +1,49 @@
 "use client";
-import { useState, useEffect } from "react"; // ✅ useState, useEffect 추가
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react"; // ✅ Suspense 추가
-import { db } from "../../firebase"; // ✅ Firestore 연결
-import { collection, query, orderBy, getDocs } from "firebase/firestore"; // ✅ Firestore 관련 함수 추가
-
+import { db } from "../../firebase";
+import { collection, query, orderBy, getDocs } from "firebase/firestore";
 
 export default function ResultsPage() {
-  return (
-    <Suspense fallback={<div>로딩 중...</div>}>  {/* ✅ Suspense로 감싸기 */}
-      <ResultsContent />
-    </Suspense>
-  );
-}
-
-
-function ResultsContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
-  const time = parseFloat(searchParams.get("time")); // 문자열을 숫자로 변환
+  const time = parseFloat(searchParams.get("time"));
   const [rankings, setRankings] = useState([]);
   const [userRank, setUserRank] = useState(null);
 
-  // ✅ Firestore에서 랭킹 데이터 가져오기
   useEffect(() => {
     const fetchRankings = async () => {
       const recordsRef = collection(db, "records");
-      const q = query(recordsRef, orderBy("time", "asc")); // 시간 기준으로 정렬 (빠른 순)
+      const q = query(recordsRef, orderBy("time", "asc"));
       const querySnapshot = await getDocs(q);
 
-      const records = [];
+      const allRecords = [];
+      let seenNames = new Set();
       let rank = 1;
       let userFound = false;
+      let userRankTemp = null;
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        records.push({
+        if (data.hidden) return; // ❗ 비노출 데이터 제외
+        allRecords.push({
           name: data.name,
           time: data.time,
           rank: rank,
+          duplicate: seenNames.has(data.name) ? "Y" : "N"
         });
 
-        // ✅ 사용자의 기록이 몇 위인지 찾기
-        if (!userFound && data.time >= time) {
-          setUserRank(rank);
+        if (!userFound && data.time >= time && !seenNames.has(data.name)) {
+          userRankTemp = rank;
           userFound = true;
         }
+
+        seenNames.add(data.name);
         rank++;
       });
 
-      setRankings(records.slice(0, 20)); // 상위 20개만 저장
-      if (!userFound) setUserRank(rank); // 사용자가 마지막 순위일 경우
+      setRankings(allRecords.slice(0, 20));
+      setUserRank(userRankTemp || rank);
     };
 
     fetchRankings();
@@ -80,8 +73,8 @@ function ResultsContent() {
       <br />
       <button
         onClick={() => window.location.href = "/"}
-        className="button">
-      
+        className="button"
+      >
         다시 도전하기
       </button>
     </div>
