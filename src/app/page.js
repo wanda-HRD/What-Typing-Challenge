@@ -53,9 +53,11 @@ export default function Home() {
       </div>
 
       {/* ✅ 주의사항 이미지 - 가운데 정렬 + 여백 */}
-      <img
+      <Image
   src="/notice.png"
   alt="주의사항"
+  width={600}
+  height={700}
   className="notice-image"
 />
     </div>
