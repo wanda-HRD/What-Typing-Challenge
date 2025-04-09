@@ -1,5 +1,5 @@
 "use client";
-import "./styles.css"; // ✅ src/app/styles.css에서 불러옴
+import "@/app/globals.css"; // ✅ global 스타일 import
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -23,8 +23,8 @@ export default function Home() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
-      {/* ✅ 로고 이미지 */}
+    <div className="main-wrapper"> {/* ✅ 배경 적용을 위한 클래스 추가 */}
+
       <Image
         src="/logo3.png"
         alt="로고"

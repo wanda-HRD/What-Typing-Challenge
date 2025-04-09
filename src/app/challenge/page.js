@@ -1,6 +1,6 @@
 "use client";
-
-import { useState, useEffect, Suspense } from "react";
+import "@/app/globals.css"; // ✅ global 스타일 import
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -19,13 +19,8 @@ function ChallengeContent() {
   const router = useRouter();
   const name = searchParams.get("name");
 
-  // ✅ 페이지 진입 시 challenge-page 클래스 추가
-  useEffect(() => {
-    document.body.classList.add("challenge-page");
-    return () => {
-      document.body.classList.remove("challenge-page");
-    };
-  }, []);
+
+
   const textToType =
     "안녕하세요 지금부터 WHAT 타이핑 챌린지를 시작하겠습니다.";
 
@@ -72,8 +67,13 @@ function ChallengeContent() {
   };
 
   return (
-    <div className="challenge-wrapper">
-      {/* ✅ 제목+안내 이미지 */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", // ✅ 이걸로 전체 요소들 가운데 정렬
+          padding: "20px",
+        }}>
       <Image
         src="/challenge-header.png"
         alt="챌린지 제목"

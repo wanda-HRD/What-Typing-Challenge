@@ -1,5 +1,5 @@
 "use client";
-
+import "@/app/globals.css"; // ✅ global 스타일 import
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { db } from "../../firebase";
@@ -58,7 +58,7 @@ function ResultsContent() {
   }, [time, name]);
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
+    <div style={{ maxWidth: "650px", margin: "0 auto", textAlign: "center", padding: "20px" }}>
       <h1>🏆 결과 확인 페이지 🏆</h1>
       <p>🎉 <strong>{name}</strong> 님의 타이핑 기록:</p>
       <h2 style={{ color: "blue", fontSize: "24px" }}>{time} 초</h2>
