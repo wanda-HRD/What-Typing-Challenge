@@ -59,6 +59,7 @@ export default function Home() {
   width={600}
   height={700}
   className="notice-image"
+  unoptimized
 />
     </div>
   );

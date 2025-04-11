@@ -27,7 +27,7 @@ body {
   background-image: url('/main.png');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: un-repeat;
   background-attachment: fixed;
 }
 
@@ -169,11 +169,12 @@ body {
   border-radius: 15px;
   background-color: transparent;
   outline: none;
+  display: block; /* ✅ 명시 */
   /* ✅ 여기를 이렇게 수정! */
   margin: 0 auto 10px auto;
 }
 
-/* ✅ 결과 버튼 */
+/* ✅ 결과 확인 버튼 */
 .result-button {
   width: 150px;
   height: 60px;
@@ -199,18 +200,162 @@ body {
   margin-right: auto;
 }
 
-/* ✅ 결과 랭킹 스타일 */
-.rank-list {
-  text-align: left;
-  display: inline-block;
-  font-size: 18px;
-  list-style-type: none;
-  padding: 0;
+/* 결과 페이지 전체 레이아웃 */
+.results-layout {
+  max-width: 650px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0px;
 }
 
-.rank-list li {
-  padding: 5px 0;
-  border-bottom: 1px solid #ddd;
+/* 헤더 (챌린지 시간 표시용) */
+.results-header {
+  width: 600px;
+  height: 200px;
+  margin: 30 auto -20px;
+  background-image: url('/results-header.png'); /* 이미지 파일명 */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+/* ✅ 결과 시간 표시용 (ex. 42.36초 숫자 폰트 조정용) */
+.result-time {
+  font-size: 90px;
+  font-weight: bold;
+  color: #FF5324;
+  position: absolute;
+  bottom: 0px; /* ✅ 숫자가 이미지 하단 중앙에 오도록 */
+  left: 46%;
+  transform: translateX(-50%);
+}
+
+
+/* ✅ 순위 라인 전체 영역 */
+.rank-line-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;     /* ✅ 하단 기준 정렬 */
+  gap: 8px;
+  margin-top: 50px;
+  flex-wrap: nowrap;
+}
+
+.my-rank-name {
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+  vertical-align: bottom;
+}
+
+.rank-number {
+  font-size: 64px;            /* ✅ 숫자는 크게 */
+  font-weight: 900;
+  color: black;
+  line-height: 1;
+  vertical-align: bottom;
+  min-width: 50px;
+  text-align: center;
+}
+
+.rank-title {
+  height: 32px;
+  width: auto;
+  vertical-align: bottom;
+}
+.rank-unit {
+  height: 32px;
+  width: auto;
+  vertical-align: bottom;
+}
+
+/* ✅ "위입니다" 이미지 */
+.rank-unit {
+  width: 200px;
+  height: auto;
+}
+
+
+/* 축하 메시지 */
+.congrats-message {
+  margin: 10px auto 30px;
+  color: #ffe000;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+
+/*Top20*/
+
+.top20-container {
+  width: 100%;
+  max-width: 600px;
+  height: 1200px; 
+  background-image: url('/top20-container.png');
+  background-size: cover;
+  background-position: center;
+  padding: 130px 20px 30px 20px; /* 상단 여백 확보 */
+  margin: 20 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 위부터 시작 */
+  gap: 6px; /* 줄 간격 */
+  overflow: hidden; /* 스크롤 제거 */
+}
+
+
+/* ✅ 각 행 구성 */
+.rank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+  background-color: rgba(255, 249, 245, 0.836); /* optional */
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+/* ✅ TOP5 강조용 */
+.top5-highlight {
+  background-color: rgba(255, 124, 18, 0.2);
+  border-radius: 10px;
+}
+
+/* ✅ 순위 이미지 */
+.rank-image {
+  width: 50px;
+  height: 30px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* ✅ 이름 & 시간 */
+.top20-rank-name {
+  flex: 1;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.rank-time {
+  width: 80px;
+  text-align: right;
+}
+
+
+.retry-button {
+  width: 150px;
+  height: 60px;
+  background-image: url('/retry-button.png'); /* 새 이미지 */
+  background-size: cover;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
 }
 
 

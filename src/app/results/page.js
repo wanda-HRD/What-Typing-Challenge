@@ -1,5 +1,5 @@
 "use client";
-import "@/app/globals.css"; // ✅ global 스타일 import
+import "@/app/globals.css";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { db } from "../../firebase";
@@ -16,6 +16,7 @@ export default function ResultsPage() {
 function ResultsContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
+  const trimmedName = name && name.length > 6 ? name.slice(0, 6) + "…" : name; // 이름 글자수 제한
   const time = parseFloat(searchParams.get("time"));
   const [rankings, setRankings] = useState([]);
   const [userRank, setUserRank] = useState(null);
@@ -32,9 +33,7 @@ function ResultsContent() {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-
-        // ✅ 비노출된 데이터는 제외
-        if (data.hidden) return;
+        if (data.hidden) return; // ✅ 비노출 데이터 제외
 
         records.push({
           name: data.name,
@@ -57,34 +56,62 @@ function ResultsContent() {
     fetchRankings();
   }, [time, name]);
 
-  return (
-    <div style={{ maxWidth: "650px", margin: "0 auto", textAlign: "center", padding: "20px" }}>
-      <h1>🏆 결과 확인 페이지 🏆</h1>
-      <p>🎉 <strong>{name}</strong> 님의 타이핑 기록:</p>
-      <h2 style={{ color: "blue", fontSize: "24px" }}>{time} 초</h2>
 
-      {userRank !== null && (
-        <p className="h1">
-          📢 당신의 순위: <strong>{userRank}위</strong>
-        </p>
+  // ✅ rankings가 업데이트된 후 여기서 항상 20개로 맞춰줌
+  const fullRankings = [
+    ...rankings,
+    ...Array(20 - rankings.length).fill({ name: "", time: null }),
+  ];
+
+  return (
+    <div className="results-layout">
+      {/* ✅ 헤더 - 챌린지 기록 보여줄 컨테이너 */}
+      <div className="results-header">
+        <p className="result-time">{time}</p> {/* 숫자만 보여짐 */}
+      </div>
+    
+
+      {/* ✅ 순위 영역 */}
+        {/* 이 영역에 "당신의 순위는" 이미지 표시 */}
+        {userRank !== null && (
+  <div className="rank-line-wrapper">
+  <span className="my-rank-name">{trimmedName}</span>
+  <img src="/rank-title.png" alt="님의 순위는" className="rank-title" />
+  <span className="rank-number">{userRank}</span>
+  <img src="/rank-unit.png" alt="위입니다" className="rank-unit" />
+</div>
+)}
+      {/* ✅ 1~3등 축하 문구 */}
+      {userRank !== null && userRank <= 3 && (
+        <div className="congrats-message">
+          🎉 축하합니다! TOP {userRank} 안에 들었어요!
+        </div>
       )}
 
-      <h2 style={{ marginTop: "30px" }}>🔥 역대 TOP 20 🔥</h2>
-      <ol style={{ textAlign: "left", display: "inline-block", fontSize: "18px" }}>
-        {rankings.map((record, index) => (
-          <li key={index} style={{ marginBottom: "5px" }}>
-            <strong>{record.rank}위</strong> - {record.name} ({record.time}초)
-          </li>
-        ))}
-      </ol>
+      {/* ✅ Top20 랭킹 (빈칸 포함 20개 고정) */}
+<div className="top20-container">
+  {fullRankings.map((record, index) => (
+    <div
+    key={index}
+    className={`rank-row ${index < 5 ? "top5-highlight" : ""}`} // 👈 TOP5는 클래스 추가
+  >
+    <div
+      className="rank-image"
+      style={{ backgroundImage: `url(/ranks/rank-${index + 1}.png)` }}
+    />
+    <div className="rank-name">{record.name || "\u00A0"}</div>
+    <div className="rank-time">
+      {record.time !== null ? `${record.time.toFixed(2)}초` : "\u00A0"}
+    </div>
+  </div>
+  ))}
+</div>
 
-      <br />
+      {/* ✅ 다시하기 버튼 */}
       <button
         onClick={() => (window.location.href = "/")}
-        className="button"
-      >
-        다시 도전하기
-      </button>
+        className="retry-button"/>
     </div>
+    
   );
 }
