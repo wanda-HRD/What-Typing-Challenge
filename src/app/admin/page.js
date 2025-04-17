@@ -35,7 +35,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!accessGranted) return;
     const fetchData = async () => {
-      const q = query(collection(db, "records"), orderBy("timestamp", "desc"));
+      const q = query(collection(db, "records"), orderBy("time", "asc"));
       const snapshot = await getDocs(q);
       const data = [];
       let seenNames = new Set();
@@ -164,8 +164,9 @@ export default function AdminPage() {
             <th>선택</th>
             <th>No</th>
             <th>이름</th>
-            <th>챌린지 완료 시간</th>
-            <th>챌린지 제시문 시간</th>
+            <th>챌린지 진행 시간</th>
+            <th>챌린지 결과</th>
+            <th>상세 소요 시간</th>
             <th>현재 랭킹</th>
             <th>중복 여부</th>
             <th>비노출 여부</th>
@@ -183,8 +184,13 @@ export default function AdminPage() {
               </td>
               <td>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
               <td>{r.name}</td>
+              <td>{r.timestamp?.toDate().toLocaleString() || "-"}</td>  
               <td>{r.time}초</td>
-              <td>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
+              <td>
+  {r.times
+    ? r.times.map((t, i) => `문장${i + 1}: ${t.toFixed(2)}초`).join(", ")
+    : "-"}
+</td>
               <td>{r.rank || "-"}</td>
               <td>{r.duplicate}</td>
               <td>{r.hidden ? "Y" : "N"}</td>

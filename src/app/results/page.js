@@ -99,7 +99,7 @@ function ResultsContent() {
       className="rank-image"
       style={{ backgroundImage: `url(/ranks/rank-${index + 1}.png)` }}
     />
-    <div className="rank-name">{record.name || "\u00A0"}</div>
+   <div className="top20-rank-name">{record.name || "\u00A0"}</div>
     <div className="rank-time">
       {record.time !== null ? `${record.time.toFixed(2)}초` : "\u00A0"}
     </div>

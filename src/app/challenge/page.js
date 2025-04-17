@@ -1,5 +1,6 @@
 "use client";
-import "@/app/globals.css"; // ✅ global 스타일 import
+
+import "@/app/globals.css";
 import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "../../firebase";
@@ -19,18 +20,23 @@ function ChallengeContent() {
   const router = useRouter();
   const name = searchParams.get("name");
 
+  const prompts = [
+    "Why를 먼저 생각합니다.",
+    "더 합리적 방법을 고민합니다.",
+    "다양한 관점에서 접근합니다.",
+    "대화를 넘어 소통합니다."
+  ];
+  const promptLabels = ["Why", "How", "Angle", "Talk"];
 
-
-  const textToType =
-    "안녕하세요 지금부터 WHAT 타이핑 챌린지를 시작하겠습니다.";
-
+  const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState(null);
-  const [completionTime, setCompletionTime] = useState(null);
-  const [isFinished, setIsFinished] = useState(false);
+  const [times, setTimes] = useState([]);
   const [showWarning, setShowWarning] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   const handleInputChange = async (e) => {
+    if (isComplete) return; // ✅ 제시문 완료 시 입력 차단
     const value = e.target.value;
 
     // ✅ 복붙 방지
@@ -40,12 +46,10 @@ function ChallengeContent() {
       return;
     }
 
+    // ✅ 매크로 방지
     if (!startTime) {
       setStartTime(Date.now());
-    }
-
-    // ✅ 매크로 입력 방지
-    if (value.length > 20 && Date.now() - startTime < 500) {
+    } else if (value.length > 20 && Date.now() - startTime < 500) {
       setShowWarning(true);
       setUserInput("");
       return;
@@ -53,27 +57,44 @@ function ChallengeContent() {
 
     setUserInput(value);
 
-    if (value === textToType) {
+    if (value === prompts[currentPromptIndex]) {
       const timeTaken = ((Date.now() - startTime) / 1000).toFixed(2);
-      setCompletionTime(timeTaken);
-      setIsFinished(true);
-
-      await addDoc(collection(db, "records"), {
-        name,
-        time: parseFloat(timeTaken),
-        timestamp: new Date(),
-      });
+      const updatedTimes = [...times, parseFloat(timeTaken)];
+      setTimes(updatedTimes);
+      setUserInput("");
+      setStartTime(null);
+    
+      if (currentPromptIndex === prompts.length - 1) {
+        // ✅ 마지막 제시문이면 입력 종료
+        setIsComplete(true);
+      } else if (currentPromptIndex < prompts.length - 1) {
+        // ✅ 마지막이 아닐 때만 다음 제시문으로
+        setCurrentPromptIndex(currentPromptIndex + 1);
+      }
     }
+
+  };
+
+  const handleResultSubmit = async () => {
+    const totalTime = times.reduce((a, b) => a + b, 0).toFixed(2);
+    await addDoc(collection(db, "records"), {
+      name,
+      time: parseFloat(totalTime),
+      times,
+      timestamp: new Date(),
+    });
+  
+    router.push(`/results?name=${name}&time=${totalTime}`);
   };
 
   return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center", // ✅ 이걸로 전체 요소들 가운데 정렬
-          padding: "20px",
-        }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "20px",
+      }}>
       <Image
         src="/challenge-header.png"
         alt="챌린지 제목"
@@ -83,47 +104,49 @@ function ChallengeContent() {
       />
 
       {/* ✅ 제시문 컨테이너 */}
-      <div className="prompt-container">
-        <div className="prompt-label"></div>
-        <div className="prompt-typing" style={{ userSelect: "none" }}>
-          {textToType.split("").map((char, index) => {
-            let color = "black";
-            if (index < userInput.length) {
-              color = userInput[index] === textToType[index] ? "green" : "red";
-            }
-            return (
-              <span key={index} style={{ color }}>
-                {char}
-              </span>
-            );
-          })}
-        </div>
-      </div>
+      <div className={`prompt-container prompt-${currentPromptIndex + 1}`}>
+  <div className="prompt-text">
+    {prompts[currentPromptIndex].split("").map((char, index) => {
+      let color = "black";
+      if (index < userInput.length) {
+        color = userInput[index] === char ? "green" : "red";
+      }
+      return (
+        <span key={index} style={{ color }}>
+          {char}
+        </span>
+      );
+    })}
+  </div>
+</div>
 
       {/* ✅ 타이핑 입력창 */}
       <textarea
-        value={userInput}
-        onChange={handleInputChange}
-        placeholder="여기에 타이핑하세요..."
-        className="typing-area"
-      />
+  value={userInput}
+  onChange={handleInputChange}
+  placeholder="여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다."
+  className="typing-area"
+  disabled={isComplete}
+/>
 
+      {/* ✅ 제시문 시간 표시 */}
+      {times.map((t, idx) => (
+  <p key={idx} className="typing-time">
+    {promptLabels[idx]}  ⏱ {t.toFixed(2)}초
+  </p>
+))}
       {/* ✅ 결과 버튼 */}
-      {isFinished && (
-        <button
-          className="result-button"
-          onClick={() =>
-            router.push(`/results?name=${name}&time=${completionTime}`)
-          }
-        ></button>
+      {isComplete && (
+        <button className="result-button" onClick={handleResultSubmit} />
       )}
 
-      {/* ✅ 조작 방지 경고 */}
+      {/* ✅ 경고 메시지 */}
       {showWarning && (
         <div className="warning-popup">
-          🤖 복사/붙여넣기 또는 비정상 입력은 금지입니다! 진짜 실력으로 승부해 주세요!
+          🤖 복사/붙여넣기 또는 비정상 입력은 금지입니다!
         </div>
       )}
     </div>
   );
-}
+  }
+  

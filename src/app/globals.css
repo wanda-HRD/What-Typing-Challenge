@@ -116,7 +116,7 @@ body {
   margin: 0 auto 20px;
 }
 
-/* ✅ 제시문 영역 */
+/* 제시문 컨테이너 공통 스타일 */
 .prompt-container {
   width: 100%;
   max-width: 600px;
@@ -124,9 +124,41 @@ body {
   margin: 0 auto 15px;
   padding: 20px;
   border-radius: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 각 제시문에 따라 배경 이미지 적용 */
+.prompt-1 {
+  background-image: url("/prompt/prompt-1.png");
+}
+.prompt-2 {
+  background-image: url("/prompt/prompt-2.png");
+}
+.prompt-3 {
+  background-image: url("/prompt/prompt-3.png");
+}
+.prompt-4 {
+  background-image: url("/prompt/prompt-4.png");
+}
+/* 제시문 문장 */
+.prompt-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin-top: 30px;
+  user-select: none;
+}
+
+/* 시간 표시 텍스트 */
+.typing-time {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px auto;
+  color: white;
+  text-align: center;
 }
 .prompt-label {
   height: 50px;
