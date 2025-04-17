@@ -121,9 +121,6 @@ body {
   width: 100%;
   max-width: 600px;
   height: 300px;
-  background-image: url('/prompt-container.png');
-  background-size: cover;
-  background-position: center;
   margin: 0 auto 15px;
   padding: 20px;
   border-radius: 15px;
