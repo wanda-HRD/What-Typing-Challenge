@@ -19,6 +19,7 @@ export default function AdminPage() {
   const [rankingList, setRankingList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortOption, setSortOption] = useState("rank-asc");
+  const [filterPrompt, setFilterPrompt] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 200;
 
@@ -38,22 +39,35 @@ export default function AdminPage() {
       const q = query(collection(db, "records"), orderBy("time", "asc"));
       const snapshot = await getDocs(q);
       const data = [];
-      let seenNames = new Set();
+      const rankGroups = {};
+
       snapshot.forEach((docSnap) => {
         const d = docSnap.data();
-        data.push({ id: docSnap.id, ...d });
+        const label = d.promptLabel || "순차";
+        data.push({ id: docSnap.id, ...d, label });
+        if (!rankGroups[label]) rankGroups[label] = [];
+        rankGroups[label].push({ id: docSnap.id, ...d });
       });
 
-      const visibleData = data.filter((d) => d.hidden !== true);
-      const withRanks = visibleData.map((d, i) => ({
-        ...d,
-        rank: i + 1,
-        duplicate: seenNames.has(d.name) ? "Y" : "N",
-      }));
-      withRanks.forEach((r) => seenNames.add(r.name));
+      const fullRanked = [];
+      for (const label in rankGroups) {
+        const group = rankGroups[label].filter((d) => d.hidden !== true);
+        const seenNames = new Set();
+        const withRank = group.map((d, i) => {
+          const isDup = seenNames.has(d.name);
+          seenNames.add(d.name);
+          return { 
+            ...d,
+            label,
+            rank: i + 1,
+            duplicate: isDup ? "Y" : "N",
+          };
+        });
+        fullRanked.push(...withRank);
+      }
 
       setRecords(data);
-      setRankingList(withRanks);
+      setRankingList(fullRanked);
       setLoading(false);
     };
     fetchData();
@@ -83,14 +97,19 @@ export default function AdminPage() {
   };
 
   const getSortedData = () => {
-    const dataWithRank = records.map((r) => {
+    let dataWithRank = records.map((r) => {
       const rankInfo = rankingList.find((d) => d.id === r.id);
       return {
         ...r,
         rank: rankInfo?.rank || null,
         duplicate: rankInfo?.duplicate || "-",
+        label: r.promptLabel || "순차",
       };
     });
+
+    if (filterPrompt !== "all") {
+      dataWithRank = dataWithRank.filter((r) => r.label === filterPrompt);
+    }
 
     switch (sortOption) {
       case "rank-asc":
@@ -136,10 +155,10 @@ export default function AdminPage() {
   if (loading) return <div style={{ textAlign: "center" }}>불러오는 중...</div>;
 
   return (
-    <div style={{ padding: "30px" }}>
+      <div style={{ padding: "30px", color: "black" }}>
       <h1>📊 관리자 페이지</h1>
 
-      {/* ✅ 정렬 옵션 */}
+      {/* 정렬 옵션 */}
       <div style={{ marginBottom: "10px" }}>
         <label>정렬: </label>
         <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
@@ -149,9 +168,18 @@ export default function AdminPage() {
           <option value="oldest">오래된순</option>
           <option value="name">이름순</option>
         </select>
+
+        <label style={{ marginLeft: "20px" }}>제시문 필터: </label>
+        <select value={filterPrompt} onChange={(e) => setFilterPrompt(e.target.value)}>
+          <option value="all">전체</option>
+          <option value="순차">순차</option>
+          <option value="Why">Why</option>
+          <option value="How">How</option>
+          <option value="Angle">Angle</option>
+          <option value="Talk">Talk</option>
+        </select>
       </div>
 
-      {/* ✅ 일괄 작업 버튼 */}
       <div style={{ marginBottom: "15px" }}>
         <button onClick={() => handleBulkUpdate("show")} style={{ padding: "8px 16px", marginRight: "10px", backgroundColor: "#d1e7dd", border: "1px solid #0f5132", borderRadius: "5px", cursor: "pointer" }}>선택 노출</button>
         <button onClick={() => handleBulkUpdate("hide")} style={{ padding: "8px 16px", marginRight: "10px", backgroundColor: "#fff3cd", border: "1px solid #664d03", borderRadius: "5px", cursor: "pointer" }}>선택 비노출</button>
@@ -164,12 +192,12 @@ export default function AdminPage() {
             <th>선택</th>
             <th>No</th>
             <th>이름</th>
-            <th>챌린지 진행 시간</th>
-            <th>챌린지 결과</th>
-            <th>상세 소요 시간</th>
+            <th>챌린지 시간</th>
+            <th>제시문</th>
+            <th>상세 시간</th>
             <th>현재 랭킹</th>
-            <th>중복 여부</th>
-            <th>비노출 여부</th>
+            <th>중복</th>
+            <th>비노출</th>
           </tr>
         </thead>
         <tbody>
@@ -184,13 +212,13 @@ export default function AdminPage() {
               </td>
               <td>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
               <td>{r.name}</td>
-              <td>{r.timestamp?.toDate().toLocaleString() || "-"}</td>  
-              <td>{r.time}초</td>
+              <td>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
+              <td>{r.label}</td>
               <td>
-  {r.times
-    ? r.times.map((t, i) => `문장${i + 1}: ${t.toFixed(2)}초`).join(", ")
-    : "-"}
-</td>
+                {r.times
+                  ? r.times.map((t, i) => `문장${i + 1}: ${t.toFixed(2)}초`).join(", ")
+                  : "-"}
+              </td>
               <td>{r.rank || "-"}</td>
               <td>{r.duplicate}</td>
               <td>{r.hidden ? "Y" : "N"}</td>
@@ -199,7 +227,6 @@ export default function AdminPage() {
         </tbody>
       </table>
 
-      {/* ✅ 페이지네이션 */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
         {Array.from({ length: totalPages }, (_, i) => (
           <button

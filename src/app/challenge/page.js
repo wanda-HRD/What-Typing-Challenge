@@ -27,6 +27,9 @@ function ChallengeContent() {
     "대화를 넘어 소통합니다."
   ];
   const promptLabels = ["Why", "How", "Angle", "Talk"];
+  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다.");
+
+
 
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
@@ -38,6 +41,7 @@ function ChallengeContent() {
   const handleInputChange = async (e) => {
     if (isComplete) return; // ✅ 제시문 완료 시 입력 차단
     const value = e.target.value;
+
 
     // ✅ 복붙 방지
     if (e.nativeEvent.inputType === "insertFromPaste") {
@@ -65,13 +69,13 @@ function ChallengeContent() {
       setStartTime(null);
     
       if (currentPromptIndex === prompts.length - 1) {
-        // ✅ 마지막 제시문이면 입력 종료
         setIsComplete(true);
-      } else if (currentPromptIndex < prompts.length - 1) {
-        // ✅ 마지막이 아닐 때만 다음 제시문으로
+        setPlaceholderText("↓↓결과를 확인하세요↓↓"); // ✅ 정확히 입력한 경우에만 문구 바꾸기
+      } else {
         setCurrentPromptIndex(currentPromptIndex + 1);
       }
     }
+    
 
   };
 
@@ -124,7 +128,7 @@ function ChallengeContent() {
       <textarea
   value={userInput}
   onChange={handleInputChange}
-  placeholder="여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다."
+  placeholder={placeholderText}
   className="typing-area"
   disabled={isComplete}
 />

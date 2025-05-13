@@ -43,7 +43,7 @@ body {
 /* ✅ 메인 컨테이너 */
 .container {
   width: 600px;
-  height: 700px;
+  height: 800px;
   background-image: url('/container-bg.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -52,12 +52,12 @@ body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding-bottom: 20px;
-  margin: 0 auto;
+  padding-bottom: 30px;
+  margin: 20 auto;
   border-radius: 15px;
 }
 
-/* ✅ 입력창 + 버튼 */
+/* ✅ 이름 입력창 + 버튼 */
 .input-container {
   display: flex;
   align-items: center;
@@ -66,14 +66,14 @@ body {
 }
 
 .input-box {
-  width: 300px;
+  width: 460px;
   height: 60px;
   background-image: url('/input-box-bg.png');
   background-size: cover;
   background-position: center;
   background-color: transparent;
   border: none;
-  border-radius: 10px;
+  border-radius: 0px;
   text-align: center;
   font-size: 16px;
   font-weight: bold;
@@ -181,7 +181,7 @@ body {
   -ms-user-select: none;
 }
 
-/* ✅ 입력창 */
+/* ✅ 제시문 입력창 */
 .typing-area {
   width: 100%;
   max-width: 600px;
