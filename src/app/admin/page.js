@@ -211,7 +211,13 @@ export default function AdminPage() {
         r.name,
         r.timestamp?.toDate().toLocaleString() || "-",
         r.label,
-        r.times ? r.times.map((t, i) => `문장${i + 1}: ${t.toFixed(2)}초`).join(", ") : "-",
+        r.times ? (
+  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+    {r.times.map((t, i) => (
+      <span key={i}>문장{i + 1}: {t.toFixed(2)}초</span>
+    ))}
+  </div>
+) : "-",
         r.rank || "-",
         r.duplicate,
         r.hidden ? "Y" : "N"
