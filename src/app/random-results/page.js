@@ -63,10 +63,6 @@ function ResultsContent() {
     fetchRankings();
   }, [time, name]);
 
-  const fullRankings = [
-    ...rankings,
-    ...Array(20 - rankings.length).fill({ name: "", time: null, promptLabel: "" }),
-  ];
 
   return (
           <div className="results-wrapper">
