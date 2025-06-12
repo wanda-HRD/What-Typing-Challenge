@@ -24,7 +24,12 @@ export default function AdminPage() {
   const itemsPerPage = 200;
 
   const PASSWORD = "megaport2025";
-
+  const cellStyle = {
+  borderRight: "1px solid #ddd",
+  borderBottom: "1px solid #ddd",
+  textAlign: "center",
+  padding: "8px",
+};
   const handlePasswordSubmit = () => {
     if (password === PASSWORD) {
       setAccessGranted(true);
@@ -205,35 +210,31 @@ export default function AdminPage() {
        <tbody>
   {currentData.map((r, idx) => (
     <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
-      {[ 
-        <input type="checkbox" checked={selectedIds.includes(r.id)} onChange={() => handleSelect(r.id)} />,
-        (currentPage - 1) * itemsPerPage + idx + 1,
-        r.name,
-        r.timestamp?.toDate().toLocaleString() || "-",
-        r.label,
-        r.times ? (
-  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-    {r.times.map((t, i) => (
-      <span key={i}>문장{i + 1}: {t.toFixed(2)}초</span>
-    ))}
-  </div>
-) : "-",
-        r.rank || "-",
-        r.duplicate,
-        r.hidden ? "Y" : "N"
-      ].map((val, i) => (
-        <td
-          key={i}
-          style={{
-            borderRight: i === 8 ? "none" : "1px solid #ddd",
-            borderBottom: "1px solid #ddd", // ✅ 이 줄이 행별 구분선!
-            textAlign: "center",
-            padding: "8px",
-          }}
-        >
-          {val}
-        </td>
-      ))}
+     <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
+  <td style={cellStyle}>
+    <input
+      type="checkbox"
+      checked={selectedIds.includes(r.id)}
+      onChange={() => handleSelect(r.id)}
+    />
+  </td>
+  <td style={cellStyle}>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
+  <td style={cellStyle}>{r.name}</td>
+  <td style={cellStyle}>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
+  <td style={cellStyle}>{r.label}</td>
+  <td style={cellStyle}>
+    {r.times ? (
+      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+        {r.times.map((t, i) => (
+          <span key={i}>문장{i + 1}: {t.toFixed(2)}초</span>
+        ))}
+      </div>
+    ) : "-"}
+  </td>
+  <td style={cellStyle}>{r.rank || "-"}</td>
+  <td style={cellStyle}>{r.duplicate}</td>
+  <td style={{ ...cellStyle, borderRight: "none" }}>{r.hidden ? "Y" : "N"}</td>
+</tr>
     </tr>
   ))}
 </tbody>
