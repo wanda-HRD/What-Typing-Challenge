@@ -68,6 +68,7 @@ function ResultsContent() {
   ];
 
   return (
+    <div className="results-wrapper">
     <div className="results-layout">
       {/* ✅ 헤더 - 챌린지 기록 보여줄 컨테이너 */}
       <div className="results-header">
@@ -85,8 +86,8 @@ function ResultsContent() {
   <img src="/rank-unit.png" alt="위입니다" className="rank-unit" />
 </div>
 )}
-      {/* ✅ 1~3등 축하 문구 */}
-      {userRank !== null && userRank <= 3 && (
+      {/* ✅ 1~4등 축하 문구 */}
+      {userRank !== null && userRank <= 4 && (
         <div className="congrats-message">
           🎉 축하합니다! TOP {userRank} 안에 들었어요!
         </div>
@@ -97,7 +98,7 @@ function ResultsContent() {
   {fullRankings.map((record, index) => (
     <div
     key={index}
-    className={`rank-row ${index < 5 ? "top5-highlight" : ""}`} // 👈 TOP5는 클래스 추가
+    className={`rank-row ${index < 4 ? "top4-highlight" : ""}`} // 👈 TOP4는 클래스 추가
   >
     <div
       className="rank-image"
@@ -116,6 +117,6 @@ function ResultsContent() {
         onClick={() => (window.location.href = "/")}
         className="retry-button"/>
     </div>
-    
+</div>
   );
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Asta+Sans:wght@300..800&family=Orbit&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,12 +16,26 @@
   }
 }
 
+
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Orbit', sans-serif;
   color: var(--foreground);
-  background-color: #FF5324; /* ✅ 전역 배경색으로 설정 */
+  background-color: #1a838a;
   margin: 0;
   padding: 0;
+}
+.clear-text {
+  font-family: 'Orbit', sans-serif;
+  color: #202020; /* 원하는 텍스트 색 */
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: auto;
+}
+html, body {
+  height: 100%;
 }
 
 /* ✅ 메인 페이지 배경 */
@@ -27,7 +43,7 @@ body {
   background-image: url('/main.png');
   background-size: cover;
   background-position: center;
-  background-repeat: un-repeat;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
@@ -43,16 +59,24 @@ body {
 /* ✅ 메인 컨테이너 */
 .container {
   width: 600px;
-  height: 800px;
+  height: 600px;
+
+  /* ✅ 배경 이미지 관련 설정 유지 */
   background-image: url('/container-bg.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top center;
+
+  /* ✅ 내부 요소 정렬 */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  padding-bottom: 30px;
+
+  /* ✅ 위치 조정 */
+  justify-content: flex-start;
+  padding-top: 250px;  /* ⬅️ 여기서 조절! 이미지 높이에 따라 */
+  gap: 10px;
+
   margin: 20px auto;
   border-radius: 15px;
 }
@@ -60,9 +84,11 @@ body {
 /* ✅ 이름 입력창 + 버튼 */
 .input-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 13px;
-  margin-bottom: 10px;
+  gap: 2px;
+
+  margin-top: 240px;  /* ✅ 입력창 + 버튼 전체 위치를 내림 */
 }
 
 .input-box {
@@ -75,16 +101,18 @@ body {
   border: none;
   border-radius: 0px;
   text-align: center;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   color: black;
   outline: none;
+
+  padding: 0; /* ✅ 여백 초기화 */
+  line-height: 70px; /* ✅ height와 동일하게 설정하면 완전 세로 중앙 */
 }
 
 .button {
-  width: 150px;
-  height: 60px;
-  background-image: url('/button-bg.png');
+  width: 200px;  /* ✅ 네가 지정한 크기 */
+  height: 70px;
   background-size: cover;
   background-position: center;
   background-color: transparent;
@@ -102,11 +130,21 @@ body {
 /* ✅ 주의사항 이미지 */
 .notice-image {
   display: block;
-  margin: 20px auto;
+  margin: 0px auto;
   width: 600px;
   height: auto;
 }
 
+
+/* ❤️ 여기서부터 챌린지 페이지*/
+.challenge-wrapper {
+  background-image: url('/challenge-bg.png');  /* ✅ 이미지 경로 정확히 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
 /* ✅ 챌린지 제목 이미지 */
 .challenge-header {
   width: 100%;
@@ -120,9 +158,9 @@ body {
 .prompt-container {
   width: 100%;
   max-width: 600px;
-  height: 300px;
-  margin: 0 auto 15px;
-  padding: 20px;
+  height: 250px;
+  margin: 0 auto 5px;
+  padding: 15px;
   border-radius: 15px;
   background-size: cover;
   background-position: center;
@@ -148,7 +186,7 @@ body {
   font-weight: bold;
   color: black;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 50px;
   user-select: none;
 }
 
@@ -229,9 +267,21 @@ body {
   margin-right: auto;
 }
 
+/* ❤️ 여기서부터 결과페이지 */
+/* 결과 페이지 배경 (메인 배경을 그대로 씀)*/
+.results-wrapper {
+  background-image: url('/main.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 50px 0;
+}
+
 /* 결과 페이지 전체 레이아웃 */
 .results-layout {
-  max-width: 650px;
+  max-width: 1400px;
   margin: 0 auto;
   text-align: center;
   padding: 0px;
@@ -249,12 +299,12 @@ body {
 }
 /* ✅ 결과 시간 표시용 (ex. 42.36초 숫자 폰트 조정용) */
 .result-time {
-  font-size: 90px;
+  font-size: 110px;
   font-weight: bold;
-  color: #FF5324;
+  color: #1a838a;
   position: absolute;
-  bottom: 0px; /* ✅ 숫자가 이미지 하단 중앙에 오도록 */
-  left: 46%;
+  bottom: 15px; /* ✅ 숫자가 이미지 하단 중앙에 오도록 */
+  left: 52%;
   transform: translateX(-50%);
 }
 
@@ -273,13 +323,13 @@ body {
 .my-rank-name {
   font-size: 32px;
   font-weight: bold;
-  color: white;
+  color: rgb(0, 0, 0);
   line-height: 1;
   vertical-align: bottom;
 }
 
 .rank-number {
-  font-size: 64px;            /* ✅ 숫자는 크게 */
+  font-size: 60px;            /* ✅ 숫자는 크게 */
   font-weight: 900;
   color: black;
   line-height: 1;
@@ -308,14 +358,77 @@ body {
 
 /* 축하 메시지 */
 .congrats-message {
-  margin: 10px auto 30px;
-  color: #ffe000;
+  margin: 15px auto 30px;
+  color: #34b9ae;
   font-size: 20px;
   font-weight: bold;
 }
 
 
-/*Top20*/
+/* 랜덤모드 Top20*/
+
+.top20-random-container {
+  width: 100%;
+  max-width: 1400px; /* 더 넓게! */
+  height: 1200px;    /* 이미지 4구간 맞춰 조정 */
+  background-image: url('/top20-random-container.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  padding: 130px 50px 30px 30px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+  overflow: hidden;
+  padding-top: 200px; /* ✅ 여백을 컨테이너 전체 위에만 줌 */
+}
+/* ✅ 랜덤모드 결과랭킹 각 행 구성 */
+
+.random-rank-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  width: 290px;
+  height : 35px;
+  background-color: rgba(13, 172, 145, 0.3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+}
+
+.random-rank-image {
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.random-rank-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
+}
+.random-rank-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+.random-rank-time {
+  font-size: 16px;
+  color: #127c6e;
+}
+/*순차모드 Top10*/
 
 .top20-container {
   width: 100%;
@@ -325,7 +438,7 @@ body {
   background-size: cover;
   background-position: center;
   padding: 130px 20px 30px 20px; /* 상단 여백 확보 */
-  margin: 20 auto;
+  margin: 10 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* 위부터 시작 */
@@ -333,8 +446,7 @@ body {
   overflow: hidden; /* 스크롤 제거 */
 }
 
-
-/* ✅ 각 행 구성 */
+/* ✅ 순차모드 결과랭킹 각 행 구성 */
 .rank-row {
   display: flex;
   align-items: center;
@@ -345,12 +457,6 @@ body {
   background-color: rgba(255, 249, 245, 0.836); /* optional */
   border-radius: 8px;
   padding: 8px 16px;
-}
-
-/* ✅ TOP5 강조용 */
-.top5-highlight {
-  background-color: rgba(255, 124, 18, 0.2);
-  border-radius: 10px;
 }
 
 /* ✅ 순위 이미지 */
@@ -375,6 +481,12 @@ body {
 }
 
 
+/* ✅ TOP4 강조용 */
+.top4-highlight {
+  background-color: #c6e9e9;
+  border-radius: 10px;
+}
+
 .retry-button {
   width: 150px;
   height: 60px;
@@ -386,7 +498,29 @@ body {
   cursor: pointer;
   margin-top: 20px;
 }
+.rank-grid-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 101%;
+  gap: 40px;
+}
 
+.rank-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.rank-type-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 10px;
+}
 
 @media (max-width: 768px) {
   .container,

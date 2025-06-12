@@ -92,6 +92,8 @@ function ChallengeContent() {
   };
 
   return (
+    
+    <div className="challenge-wrapper">
     <div
       style={{
         display: "flex",
@@ -150,6 +152,7 @@ function ChallengeContent() {
           🤖 복사/붙여넣기 또는 비정상 입력은 금지입니다!
         </div>
       )}
+    </div>
     </div>
   );
   }

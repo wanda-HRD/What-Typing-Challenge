@@ -186,45 +186,51 @@ export default function AdminPage() {
         <button onClick={() => handleBulkUpdate("delete")} style={{ padding: "8px 16px", backgroundColor: "#f8d7da", border: "1px solid #842029", borderRadius: "5px", cursor: "pointer" }}>선택 삭제</button>
       </div>
 
-      <table border="1" cellPadding="8" style={{ width: "100%", marginTop: "20px" }}>
+      <table border="1" cellPadding="8" style={{ width: "100%", marginTop: "20px",borderCollapse: "collapse", }}>
         <thead>
-          <tr>
-            <th>선택</th>
-            <th>No</th>
-            <th>이름</th>
-            <th>챌린지 시간</th>
-            <th>제시문</th>
-            <th>상세 시간</th>
-            <th>현재 랭킹</th>
-            <th>중복</th>
-            <th>비노출</th>
-          </tr>
+           <tr>
+    {["선택", "No", "이름", "챌린지 시간", "제시문", "상세 시간", "현재 랭킹", "중복", "비노출"].map((label, i) => (
+      <th
+        key={label}
+        style={{
+          borderRight: i === 8 ? "none" : "1px solid #ddd", // 마지막 열만 없음
+          textAlign: "center",
+        }}
+      >
+        {label}
+      </th>
+    ))}
+  </tr>
         </thead>
-        <tbody>
-          {currentData.map((r, idx) => (
-            <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(r.id)}
-                  onChange={() => handleSelect(r.id)}
-                />
-              </td>
-              <td>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
-              <td>{r.name}</td>
-              <td>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
-              <td>{r.label}</td>
-              <td>
-                {r.times
-                  ? r.times.map((t, i) => `문장${i + 1}: ${t.toFixed(2)}초`).join(", ")
-                  : "-"}
-              </td>
-              <td>{r.rank || "-"}</td>
-              <td>{r.duplicate}</td>
-              <td>{r.hidden ? "Y" : "N"}</td>
-            </tr>
-          ))}
-        </tbody>
+       <tbody>
+  {currentData.map((r, idx) => (
+    <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
+      {[ 
+        <input type="checkbox" checked={selectedIds.includes(r.id)} onChange={() => handleSelect(r.id)} />,
+        (currentPage - 1) * itemsPerPage + idx + 1,
+        r.name,
+        r.timestamp?.toDate().toLocaleString() || "-",
+        r.label,
+        r.times ? r.times.map((t, i) => `문장${i + 1}: ${t.toFixed(2)}초`).join(", ") : "-",
+        r.rank || "-",
+        r.duplicate,
+        r.hidden ? "Y" : "N"
+      ].map((val, i) => (
+        <td
+          key={i}
+          style={{
+            borderRight: i === 8 ? "none" : "1px solid #ddd",
+            borderBottom: "1px solid #ddd", // ✅ 이 줄이 행별 구분선!
+            textAlign: "center",
+            padding: "8px",
+          }}
+        >
+          {val}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
       </table>
 
       <div style={{ marginTop: "20px", textAlign: "center" }}>

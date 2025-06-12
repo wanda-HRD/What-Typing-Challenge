@@ -69,6 +69,7 @@ function ResultsContent() {
   ];
 
   return (
+          <div className="results-wrapper">
     <div className="results-layout">
       <div className="results-header">
         <p className="result-time">{time}</p>
@@ -95,30 +96,42 @@ function ResultsContent() {
       )}
 
       {/* ✅ 순위 리스트에 제시문 정보도 같이 출력 */}
-      <div className="top20-container">
-        {fullRankings.map((record, index) => (
+   <div className="top20-random-container">
+<div className="rank-grid-wrapper">
+  {["Why", "How", "Angle", "Talk"].map((type) => {
+    const typeRanks = rankings.filter((r) => r.promptLabel === type).slice(0, 5);
+    return (
+      <div key={type} className="rank-column">
+        {typeRanks.map((record, index) => (
+          <div key={`${record.name}-${index}`} className="random-rank-row">
           <div
-            key={index}
-            className={`rank-row ${index < 5 ? "top5-highlight" : ""}`}
-          >
-            <div
-              className="rank-image"
-              style={{ backgroundImage: `url(/ranks/rank-${index + 1}.png)` }}
-            />
-            <div className="top20-rank-name">
-              {record.name || "\u00A0"} ({record.promptLabel})
-            </div>
-            <div className="rank-time">
-              {record.time !== null ? `${record.time.toFixed(2)}초` : "\u00A0"}
-            </div>
-          </div>
+           className="random-rank-image"
+           style={{
+           backgroundImage: `url(/ranks/rank-${index + 1}.png)`,
+           }}
+         />
+        <div className="random-rank-text">
+         <span className="random-rank-name">
+          {record.name} ({record.promptLabel})
+         </span>
+        <span className="random-rank-time">
+          {record.time.toFixed(2)}초
+        </span>
+      </div>
+      </div>
         ))}
       </div>
+    );
+  })}
+</div>
+</div>
+
 
       <button
         onClick={() => (window.location.href = "/")}
         className="retry-button"
       />
     </div>
+</div>
   );
 }

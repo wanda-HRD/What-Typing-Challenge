@@ -29,14 +29,6 @@ export default function Home() {
 
   return (
     <div className="main-wrapper">
-      <Image
-        src="/logo3.png"
-        alt="로고"
-        width={600}
-        height={240}
-        className="logo"
-      />
-
       <div className="container">
         <div className="input-container">
           <input
@@ -50,42 +42,20 @@ export default function Home() {
         </div>
 
         {/* ✅ 모드 선택 버튼 두 개 */}
-        <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
-  <button
-    className="button"
-    onClick={() => handleStart("sequence")}
-    style={{
-      backgroundImage: 'url("/sequence-button.png")',
-      width: "150px",
-      height: "60px",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundColor: "transparent",
-      border: "none",
-      cursor: "pointer",
-    }}
-  />
-  <button
-    className="button"
-    onClick={() => handleStart("random")}
-    style={{
-      backgroundImage: 'url("/random-button.png")',
-      width: "150px",
-      height: "60px",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundColor: "transparent",
-      border: "none",
-      cursor: "pointer",
-    }}
-  />
+        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+  <button onClick={() => handleStart("sequence")} className="button">
+    <img src="/sequence-button.png" alt="순차 모드" width={300} height={100} />
+  </button>
+  <button onClick={() => handleStart("random")} className="button">
+    <img src="/random-button.png" alt="랜덤 모드" width={300} height={100} />
+  </button>
 </div>
 </div>
       <Image
         src="/notice.png"
         alt="주의사항"
         width={600}
-        height={700}
+        height={600}
         className="notice-image"
         unoptimized
       />
