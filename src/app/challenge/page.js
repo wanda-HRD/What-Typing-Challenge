@@ -23,7 +23,7 @@ function ChallengeContent() {
   const prompts = [
     "Why를 먼저 생각합니다.",
     "더 합리적 방법을 고민합니다.",
-    "다양한 관점에서 접근합니다.",
+    "언제나 고객의 관점에서 생각합니다.",
     "대화를 넘어 소통합니다."
   ];
   const promptLabels = ["Why", "How", "Angle", "Talk"];
