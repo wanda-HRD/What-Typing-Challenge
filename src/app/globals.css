@@ -285,6 +285,8 @@ html, body {
 
 /* 결과 페이지 전체 레이아웃 */
 .results-layout {
+  display: flex;
+  flex-direction: column;
   max-width: 1400px;
   margin: 0 auto;
   text-align: center;
@@ -293,13 +295,15 @@ html, body {
 
 /* 헤더 (챌린지 시간 표시용) */
 .results-header {
-  width: 600px;
+  max-width: 600px;
+  width: 110%;
   height: 200px;
-  margin: 30 auto -20px;
-  background-image: url('/results-header.png'); /* 이미지 파일명 */
+  margin: 30px auto -20px auto;  /* ✅ 강제 가운데 정렬 */
+  background-image: url('/results-header.png');
   background-size: cover;
   background-position: center;
   position: relative;
+  display: block; /* ✅ 추가 */
 }
 /* ✅ 결과 시간 표시용 (ex. 42.36초 숫자 폰트 조정용) */
 .result-time {

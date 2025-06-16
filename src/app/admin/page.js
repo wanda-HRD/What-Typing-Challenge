@@ -20,16 +20,20 @@ export default function AdminPage() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortOption, setSortOption] = useState("rank-asc");
   const [filterPrompt, setFilterPrompt] = useState("all");
+  const [filterHidden, setFilterHidden] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 200;
 
   const PASSWORD = "megaport2025";
   const cellStyle = {
-  borderRight: "1px solid #ddd",
-  borderBottom: "1px solid #ddd",
-  textAlign: "center",
-  padding: "8px",
-};
+    borderRight: "1px solid #ddd",
+    borderBottom: "1px solid #ddd",
+    textAlign: "center",
+    padding: "8px",
+  };
+
+  const promptLabels = ["Why", "How", "Angle", "Talk"];
+
   const handlePasswordSubmit = () => {
     if (password === PASSWORD) {
       setAccessGranted(true);
@@ -61,7 +65,7 @@ export default function AdminPage() {
         const withRank = group.map((d, i) => {
           const isDup = seenNames.has(d.name);
           seenNames.add(d.name);
-          return { 
+          return {
             ...d,
             label,
             rank: i + 1,
@@ -82,6 +86,14 @@ export default function AdminPage() {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
     );
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedIds(currentData.map((r) => r.id));
+    } else {
+      setSelectedIds([]);
+    }
   };
 
   const handleBulkUpdate = async (action) => {
@@ -114,6 +126,12 @@ export default function AdminPage() {
 
     if (filterPrompt !== "all") {
       dataWithRank = dataWithRank.filter((r) => r.label === filterPrompt);
+    }
+
+    if (filterHidden !== "all") {
+      dataWithRank = dataWithRank.filter((r) =>
+        filterHidden === "Y" ? r.hidden === true : r.hidden !== true
+      );
     }
 
     switch (sortOption) {
@@ -160,7 +178,7 @@ export default function AdminPage() {
   if (loading) return <div style={{ textAlign: "center" }}>불러오는 중...</div>;
 
   return (
-      <div style={{ padding: "30px", color: "black" }}>
+    <div style={{ padding: "30px", color: "black" }}>
       <h1>📊 관리자 페이지</h1>
 
       {/* 정렬 옵션 */}
@@ -183,6 +201,13 @@ export default function AdminPage() {
           <option value="Angle">Angle</option>
           <option value="Talk">Talk</option>
         </select>
+
+        <label style={{ marginLeft: "20px" }}>노출 여부: </label>
+        <select value={filterHidden} onChange={(e) => setFilterHidden(e.target.value)}>
+          <option value="all">전체</option>
+          <option value="N">노출</option>
+          <option value="Y">비노출</option>
+        </select>
       </div>
 
       <div style={{ marginBottom: "15px" }}>
@@ -191,53 +216,68 @@ export default function AdminPage() {
         <button onClick={() => handleBulkUpdate("delete")} style={{ padding: "8px 16px", backgroundColor: "#f8d7da", border: "1px solid #842029", borderRadius: "5px", cursor: "pointer" }}>선택 삭제</button>
       </div>
 
-      <table border="1" cellPadding="8" style={{ width: "100%", marginTop: "20px",borderCollapse: "collapse", }}>
+      <table border="1" cellPadding="8" style={{ width: "100%", marginTop: "20px", borderCollapse: "collapse" }}>
         <thead>
-           <tr>
-    {["선택", "No", "이름", "챌린지 시간", "제시문", "상세 시간", "현재 랭킹", "중복", "비노출"].map((label, i) => (
-      <th
-        key={label}
-        style={{
-          borderRight: i === 8 ? "none" : "1px solid #ddd", // 마지막 열만 없음
-          textAlign: "center",
-        }}
-      >
-        {label}
-      </th>
-    ))}
-  </tr>
+          <tr>
+            <th style={cellStyle}>
+              <input
+                type="checkbox"
+                onChange={handleSelectAll}
+                checked={selectedIds.length === currentData.length && currentData.length > 0}
+              />
+            </th>
+            {[
+              "No",
+              "이름",
+              "챌린지 시간",
+              "제시문",
+              "상세 시간",
+              "현재 랭킹",
+              "중복",
+              "비노출",
+            ].map((label, i) => (
+              <th
+                key={label}
+                style={{
+                  borderRight: i === 7 ? "none" : "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                {label}
+              </th>
+            ))}
+          </tr>
         </thead>
-       <tbody>
-  {currentData.map((r, idx) => (
-    <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
-     <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
-  <td style={cellStyle}>
-    <input
-      type="checkbox"
-      checked={selectedIds.includes(r.id)}
-      onChange={() => handleSelect(r.id)}
-    />
-  </td>
-  <td style={cellStyle}>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
-  <td style={cellStyle}>{r.name}</td>
-  <td style={cellStyle}>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
-  <td style={cellStyle}>{r.label}</td>
-  <td style={cellStyle}>
-    {r.times ? (
-      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-        {r.times.map((t, i) => (
-          <span key={i}>문장{i + 1}: {t.toFixed(2)}초</span>
-        ))}
-      </div>
-    ) : "-"}
-  </td>
-  <td style={cellStyle}>{r.rank || "-"}</td>
-  <td style={cellStyle}>{r.duplicate}</td>
-  <td style={{ ...cellStyle, borderRight: "none" }}>{r.hidden ? "Y" : "N"}</td>
-</tr>
-    </tr>
-  ))}
-</tbody>
+        <tbody>
+          {currentData.map((r, idx) => (
+            <tr key={r.id} style={{ backgroundColor: r.hidden ? "#f2f2f2" : "white" }}>
+              <td style={cellStyle}>
+                <input
+                  type="checkbox"
+                  checked={selectedIds.includes(r.id)}
+                  onChange={() => handleSelect(r.id)}
+                />
+              </td>
+              <td style={cellStyle}>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
+              <td style={cellStyle}>{r.name}</td>
+              <td style={cellStyle}>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
+              <td style={cellStyle}>{r.label}</td>
+              <td style={cellStyle}>
+                {r.times ? (
+                  r.label === "순차"
+                    ? promptLabels
+                        .slice(0, r.times.length)
+                        .map((label, i) => `${label}: ${r.times[i].toFixed(2)}초`)
+                        .join(" / ")
+                    : `${r.times[0].toFixed(2)}초`
+                ) : "-"}
+              </td>
+              <td style={cellStyle}>{r.rank || "-"}</td>
+              <td style={cellStyle}>{r.duplicate}</td>
+              <td style={{ ...cellStyle, borderRight: "none" }}>{r.hidden ? "Y" : "N"}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
 
       <div style={{ marginTop: "20px", textAlign: "center" }}>
@@ -245,7 +285,15 @@ export default function AdminPage() {
           <button
             key={i + 1}
             onClick={() => setCurrentPage(i + 1)}
-            style={{ margin: "0 5px", padding: "5px 10px", backgroundColor: currentPage === i + 1 ? "#0d6efd" : "#e2e6ea", color: currentPage === i + 1 ? "white" : "black", border: "none", borderRadius: "5px", cursor: "pointer" }}
+            style={{
+              margin: "0 5px",
+              padding: "5px 10px",
+              backgroundColor: currentPage === i + 1 ? "#0d6efd" : "#e2e6ea",
+              color: currentPage === i + 1 ? "white" : "black",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
           >
             {i + 1}
           </button>
