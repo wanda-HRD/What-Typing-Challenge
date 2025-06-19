@@ -90,7 +90,7 @@ function ChallengeContent() {
       isPractice: true,
       hidden: true
     });
-    router.push("/practice-mode/result");
+    router.push(`/practice-mode/result?name=${encodeURIComponent(name)}`);
   };
 
   return (

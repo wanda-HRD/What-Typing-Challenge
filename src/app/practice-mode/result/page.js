@@ -1,81 +1,78 @@
-// ✅ 파일 위치: src/app/practice-mode/result/page.js
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { db } from "@/firebase";
-import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import "@/app/globals.css";
 
 export default function PracticeResultPage() {
-  const [rankings, setRankings] = useState([]);
+  const searchParams = useSearchParams();
+  const nameParam = searchParams.get("name");
+  const [record, setRecord] = useState(null);
 
   useEffect(() => {
-    const fetchRankings = async () => {
-      const q = query(collection(db, "records"), orderBy("time", "asc"));
+    if (!nameParam) return;
+
+    const fetchData = async () => {
+      const q = query(
+        collection(db, "records"),
+        where("name", "==", nameParam),
+        where("isPractice", "==", true),
+        orderBy("timestamp", "desc")
+      );
       const snapshot = await getDocs(q);
-      const result = [];
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.hidden) return;
-        if (data.promptLabel) return; // 순차모드만
-        if (data.isPractice) return;  // 연습모드는 제외
-
-        result.push({ name: data.name, time: data.time });
-      });
-
-      setRankings(result.slice(0, 20));
+      if (!snapshot.empty) {
+        const latest = snapshot.docs[0].data();
+        setRecord(latest);
+      }
     };
+    fetchData();
+  }, [nameParam]);
 
-    fetchRankings();
-  }, []);
+  const totalTime =
+    record?.times?.length > 0
+      ? record.times.reduce((a, b) => a + b, 0).toFixed(2)
+      : null;
 
-  const fullRankings = [
-    ...rankings,
-    ...Array(20 - rankings.length).fill({ name: "", time: null })
-  ];
+  const trimmedName =
+    nameParam && nameParam.length > 6 ? nameParam.slice(0, 6) + "…" : nameParam;
 
   return (
     <div className="results-wrapper">
       <div className="results-layout">
-  <button
-          onClick={() => (window.location.href = "/practice-mode")}
-          className="retry-button"
-        />
-        {/* ✅ 내 기록 대신 홍보 이미지 */}
-       
+        {/* ✅ 헤더 */}
+        <div className="results-header">
+          <p className="result-time">{totalTime ?? "계산 중..."}</p>
+        </div>
+
+        {/* ✅ 순위 텍스트 */}
+        <div className="rank-line-wrapper">
+          <span className="my-rank-name">{trimmedName ?? "참가자"}</span>
+          <img src="/rank-title.png" alt="님의 순위는" className="rank-title" />
+          <span className="rank-number">??</span>
+          <img src="/rank-unit.png" alt="위입니다" className="rank-unit" />
+        </div>
+
+        {/* ✅ 홍보 이미지 */}
+        <div style={{ marginTop: "40px" }}>
           <Image
-            src="/practice-promo.png" // ⬅️ "7F에서 도전해보세요" 이미지
+            src="/practice-promo.png"
             alt="도전 안내"
             width={600}
             height={200}
-            
-            style={{ objectFit: "cover", marginTop: "30px" }}
+            style={{ objectFit: "cover" }}
           />
-      
-        {/* ✅ 실제 순차모드 랭킹 출력 */}
-        <div className="top20-container">
-          {fullRankings.map((record, index) => (
-            <div
-              key={index}
-              className={`rank-row ${index < 4 ? "top4-highlight" : ""}`}
-            >
-              <div
-                className="rank-image"
-                style={{ backgroundImage: `url(/ranks/rank-${index + 1}.png)` }}
-              />
-              <div className="top20-rank-name">{record.name || "\u00A0"}</div>
-              <div className="rank-time">
-                {record.time !== null ? `${record.time.toFixed(2)}초` : "\u00A0"}
-              </div>
-            </div>
-          ))}
         </div>
 
+        {/* ✅ 다시 도전 버튼 */}
         <button
-          onClick={() => (window.location.href = "/practice-mode")}
           className="retry-button"
+          style={{ marginTop: "40px" }}
+          onClick={() => {
+            window.location.href = "/practice-mode";
+          }}
         />
       </div>
     </div>
