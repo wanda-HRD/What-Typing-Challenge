@@ -105,30 +105,39 @@ function ResultsContent() {
         <div className="top20-random-container">
           <div className="rank-grid-wrapper">
             {["Why", "How", "Angle", "Talk"].map((type) => {
-              const typeRanks = rankings[type] || [];
-              return (
-                <div key={type} className="rank-column">
-                  {typeRanks.map((record, index) => (
-                    <div key={`${record.name}-${index}`} className="random-rank-row">
-                      <div
-                        className="random-rank-image"
-                        style={{
-                          backgroundImage: `url(/ranks/rank-${index + 1}.png)`
-                        }}
-                      />
-                      <div className="random-rank-text">
-                        <span className="random-rank-name">
-                          {record.name} ({record.promptLabel})
-                        </span>
-                        <span className="random-rank-time">
-                          {record.time.toFixed(2)}초
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
+  const typeRanks = rankings[type] || [];
+  return (
+    <div key={type} className="rank-column">
+     {typeRanks.length > 0 ? (
+  typeRanks.map((record, index) => (
+    <div key={`${record.name}-${index}`} className="random-rank-row">
+      <div
+        className="random-rank-image"
+        style={{
+          backgroundImage: `url(/ranks/rank-${index + 1}.png)`
+        }}
+      />
+      <div className="random-rank-text">
+        <span className="random-rank-name">
+          {record.name} ({record.promptLabel})
+        </span>
+        <span className="random-rank-time">
+          {typeof record.time === "number"
+            ? `${record.time.toFixed(2)}초`
+            : "기록 없음"}
+        </span>
+      </div>
+    </div>
+  ))
+) : (
+  <div className="random-rank-row no-data">
+    <div className="random-rank-text">기록 없음</div>
+  </div>
+)}
+    </div>
+  );
+})}
+
           </div>
         </div>
 

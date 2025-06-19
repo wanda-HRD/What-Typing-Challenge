@@ -49,6 +49,16 @@ function ClientContent() {
 
   return (
     <div className="results-wrapper">
+       <div style={{ width: "100%", display: "flex", justifyContent: "center", marginBottom: "2px" }}>
+  <Image
+    src="/practice-mode-label.png"
+    alt="연습결과"
+    width={600}
+    height={150}
+    style={{ objectFit: "contain" }}
+  />
+</div>
+     
       <div className="results-layout">
         {/* ✅ 헤더 */}
         <div className="results-header">
