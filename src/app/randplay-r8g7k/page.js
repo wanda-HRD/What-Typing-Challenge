@@ -87,7 +87,7 @@ function ChallengeContent() {
       timestamp: new Date(),
     });
 
-    router.push(`/random-results?name=${name}&time=${time}`);
+    router.push(`/ranksnap-k110z?name=${name}&time=${time}`);
   };
 
   return (

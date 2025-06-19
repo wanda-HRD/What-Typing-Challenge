@@ -52,8 +52,8 @@ export default function AdminPage() {
 
       snapshot.forEach((docSnap) => {
         const d = docSnap.data();
-        const label = d.promptLabel || "순차";
-        data.push({ id: docSnap.id, ...d, label });
+        const label = d.isPractice ? "연습" : (d.promptLabel || "순차");
+        data.push({ id: docSnap.id, ...d, label }); 
         if (!rankGroups[label]) rankGroups[label] = [];
         rankGroups[label].push({ id: docSnap.id, ...d });
       });
@@ -120,7 +120,7 @@ export default function AdminPage() {
         ...r,
         rank: rankInfo?.rank || null,
         duplicate: rankInfo?.duplicate || "-",
-        label: r.promptLabel || "순차",
+        label: r.label,
       };
     });
 
@@ -196,6 +196,7 @@ export default function AdminPage() {
         <select value={filterPrompt} onChange={(e) => setFilterPrompt(e.target.value)}>
           <option value="all">전체</option>
           <option value="순차">순차</option>
+           <option value="연습">연습</option>
           <option value="Why">Why</option>
           <option value="How">How</option>
           <option value="Angle">Angle</option>
@@ -232,6 +233,7 @@ export default function AdminPage() {
               "챌린지 시간",
               "제시문",
               "상세 시간",
+              "최종 시간",
               "현재 랭킹",
               "중복",
               "비노출",
@@ -264,7 +266,7 @@ export default function AdminPage() {
               <td style={cellStyle}>{r.label}</td>
               <td style={cellStyle}>
                 {r.times ? (
-                  r.label === "순차"
+                 r.label === "순차" || r.label === "연습"
                     ? promptLabels
                         .slice(0, r.times.length)
                         .map((label, i) => `${label}: ${r.times[i].toFixed(2)}초`)
@@ -272,6 +274,13 @@ export default function AdminPage() {
                     : `${r.times[0].toFixed(2)}초`
                 ) : "-"}
               </td>
+              <td style={cellStyle}>
+  {r.times
+    ? r.label === "순차" || r.label === "연습"
+      ? `${r.times.reduce((a, b) => a + b, 0).toFixed(2)}초`
+      : `${r.times[0].toFixed(2)}초`
+    : "-"}
+</td>
               <td style={cellStyle}>{r.rank || "-"}</td>
               <td style={cellStyle}>{r.duplicate}</td>
               <td style={{ ...cellStyle, borderRight: "none" }}>{r.hidden ? "Y" : "N"}</td>

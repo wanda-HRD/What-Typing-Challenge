@@ -133,7 +133,7 @@ function ResultsContent() {
         </div>
 
         <button
-          onClick={() => (window.location.href = "/")}
+          onClick={() => (window.location.href = "/supermain-2025-w9s8d")}
           className="retry-button"
         />
       </div>

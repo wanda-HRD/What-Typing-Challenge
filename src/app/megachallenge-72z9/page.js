@@ -88,7 +88,7 @@ function ChallengeContent() {
       timestamp: new Date(),
     });
   
-    router.push(`/results?name=${name}&time=${totalTime}`);
+    router.push(`/result-zeta-q0w9x?name=${name}&time=${totalTime}`);
   };
 
   return (

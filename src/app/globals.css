@@ -291,6 +291,7 @@ html, body {
   margin: 0 auto;
   text-align: center;
   padding: 0px;
+   align-items: center; 
 }
 
 /* 헤더 (챌린지 시간 표시용) */
