@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { db } from "@/firebase";
 import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
@@ -8,6 +8,14 @@ import Image from "next/image";
 import "@/app/globals.css";
 
 export default function PracticeResultPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <ClientContent />
+    </Suspense>
+  );
+}
+
+function ClientContent() {
   const searchParams = useSearchParams();
   const nameParam = searchParams.get("name");
   const [record, setRecord] = useState(null);
@@ -68,11 +76,8 @@ export default function PracticeResultPage() {
 
         {/* ✅ 다시 도전 버튼 */}
         <button
+          onClick={() => (window.location.href = "/practice-mode")}
           className="retry-button"
-          style={{ marginTop: "40px" }}
-          onClick={() => {
-            window.location.href = "/practice-mode";
-          }}
         />
       </div>
     </div>
