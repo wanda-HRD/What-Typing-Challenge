@@ -1,65 +1,14 @@
 "use client";
-import "@/app/globals.css";
-import Image from "next/image";
-import { useState } from "react";
+import { useEffect } from "react"; // ✅ useEffect 꼭 import
 import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const [name, setName] = useState("");
+export default function RootRedirectPage() {
   const router = useRouter();
 
-  const handleStart = (mode) => {
-    if (name.trim() === "") {
-      alert("이름을 입력하세요!");
-      return;
-    }
-    const encodedName = encodeURIComponent(name);
-    if (mode === "sequence") {
-      router.push(`/challenge?name=${encodedName}`);
-    } else if (mode === "random") {
-      router.push(`/random-challenge?name=${encodedName}`);
-    }
-  };
+  useEffect(() => {
+    alert("정상적인 경로가 아닙니다. 챌린지 게이트로 이동합니다.");
+    router.replace("/practice-gate");
+  }, []);
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleStart("sequence");
-    }
-  };
-
-  return (
-    <div className="main-wrapper">
-      <div className="container">
-        <div className="input-container">
-          <input
-            type="text"
-            placeholder="홍길동 또는 홍길동B 형태로 입력하세요"
-            className="input-box"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-
-        {/* ✅ 모드 선택 버튼 두 개 */}
-        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-  <button onClick={() => handleStart("sequence")} className="button">
-    <img src="/sequence-button.png" alt="순차 모드" width={300} height={100} />
-  </button>
-  <button onClick={() => handleStart("random")} className="button">
-    <img src="/random-button.png" alt="랜덤 모드" width={300} height={100} />
-  </button>
-</div>
-</div>
-      <Image
-        src="/notice.png"
-        alt="주의사항"
-        width={600}
-        height={600}
-        className="notice-image"
-        unoptimized
-      />
-    </div>
-  );
-  }
-
+  return null;
+}
