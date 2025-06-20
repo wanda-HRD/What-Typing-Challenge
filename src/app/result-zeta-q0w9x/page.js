@@ -114,7 +114,7 @@ function ResultsContent() {
 
       {/* ✅ 다시하기 버튼 */}
       <button
-        onClick={() => (window.location.href = "//supermain-2025-w9s8d")}
+        onClick={() => (window.location.href = "/supermain-2025-w9s8d")}
         className="retry-button"/>
     </div>
 </div>
