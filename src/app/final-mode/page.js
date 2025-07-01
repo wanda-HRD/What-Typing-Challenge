@@ -1,8 +1,10 @@
 // ✅ 파일 위치: src/app/final-mode/page.js
 "use client";
-
-import "@/app/globals.css";
+// ✅ 정답 예시 (useRouter까지 같이 쓰는 경우)
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import "@/app/globals.css";
+
 
 export default function FinalModeMain() {
   const [name, setName] = useState("");
