@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function FinalResult4() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const name = searchParams.get("name");
   const time = parseFloat(searchParams.get("time"));
