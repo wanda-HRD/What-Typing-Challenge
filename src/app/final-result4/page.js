@@ -2,7 +2,7 @@
 "use client";
 
 import "@/app/globals.css";
-import { useRouter, useSearchParams } from "next/navigation";
+
 
 export default function FinalResult4() {
   const searchParams = useSearchParams();
