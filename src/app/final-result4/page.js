@@ -1,10 +1,8 @@
 // ✅ 파일 위치: src/app/final-result4/page.js
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import "@/app/globals.css";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function FinalResult4() {
   const searchParams = useSearchParams();
@@ -14,9 +12,7 @@ export default function FinalResult4() {
   const time = parseFloat(searchParams.get("time"));
   const trimmedName = name && name.length > 6 ? name.slice(0, 6) + "…" : name;
 
-  const handleGoHome = () => {
-    router.push("/supermain-2025-w9s8d"); // 또는 다른 홈 주소
-  };
+
 
   return (
     <div className="results-wrapper">

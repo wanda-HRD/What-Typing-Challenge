@@ -1,10 +1,8 @@
 // ✅ 파일 위치: src/app/final-mode/page.js
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import "@/app/globals.css";
+import { useRouter } from "next/navigation";
 
 export default function FinalModeMain() {
   const [name, setName] = useState("");
