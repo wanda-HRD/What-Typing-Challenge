@@ -54,7 +54,7 @@ export default function PracticeMain() {
 
           {/* ✅ 안내 문구 추가 */}
           <p style={{ marginTop: "2px", fontSize: "16px", color: "black", fontWeight: "bold" }}>
-            * 연습모드를 경험해보고, 7F 스마일카페에서 실제 챌린지에 도전해보세요 🔥
+            * 결승전 시작 전 연습모드로 손을 풀어보세요 🔥
           </p>
         </div>
       </div>

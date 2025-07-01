@@ -73,16 +73,6 @@ function ClientContent() {
           <img src="/rank-unit.png" alt="위입니다" className="rank-unit" />
         </div>
 
-        {/* ✅ 홍보 이미지 */}
-        <div style={{ marginTop: "40px" }}>
-          <Image
-            src="/practice-promo.png"
-            alt="도전 안내"
-            width={600}
-            height={200}
-            style={{ objectFit: "cover" }}
-          />
-        </div>
 
         {/* ✅ 다시 도전 버튼 */}
         <button

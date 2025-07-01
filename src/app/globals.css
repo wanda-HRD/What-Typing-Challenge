@@ -560,3 +560,19 @@ html, body {
     padding: 10px;
   }
 }
+.final-bg {
+  background-image: url("/final-bg.png"); /* ✅ 파일명은 자유롭게! */
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+.final-mode-wrapper {
+  background-color: #1a2222; /* ✅ 원하는 컬러 지정 가능 */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

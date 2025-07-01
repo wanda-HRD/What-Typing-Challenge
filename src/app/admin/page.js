@@ -52,8 +52,8 @@ export default function AdminPage() {
 
       snapshot.forEach((docSnap) => {
         const d = docSnap.data();
-        const label = d.isPractice ? "연습" : (d.promptLabel || "순차");
-        data.push({ id: docSnap.id, ...d, label }); 
+        const label = d.label || (d.isPractice ? "연습" : (d.promptLabel || "순차"));
+data.push({ id: docSnap.id, ...d, label });
         if (!rankGroups[label]) rankGroups[label] = [];
         rankGroups[label].push({ id: docSnap.id, ...d });
       });
@@ -201,6 +201,10 @@ export default function AdminPage() {
           <option value="How">How</option>
           <option value="Angle">Angle</option>
           <option value="Talk">Talk</option>
+          <option value="결승-순차1">결승-순차1</option>
+<option value="결승-순차2">결승-순차2</option>
+<option value="결승-랜덤1">결승-랜덤1</option>
+<option value="결승-랜덤2">결승-랜덤2</option>
         </select>
 
         <label style={{ marginLeft: "20px" }}>노출 여부: </label>
@@ -263,7 +267,19 @@ export default function AdminPage() {
               <td style={cellStyle}>{(currentPage - 1) * itemsPerPage + idx + 1}</td>
               <td style={cellStyle}>{r.name}</td>
               <td style={cellStyle}>{r.timestamp?.toDate().toLocaleString() || "-"}</td>
-              <td style={cellStyle}>{r.label}</td>
+              {/* ✅ 여기 수정 */}
+<td style={cellStyle}>{r.label || r.promptLabel}</td>
+
+<td style={cellStyle}>
+  {r.times ? (
+    r.label === "순차" || r.label === "연습"
+      ? promptLabels
+          .slice(0, r.times.length)
+          .map((label, i) => `${label}: ${r.times[i].toFixed(2)}초`)
+          .join(" / ")
+      : `${r.times[0].toFixed(2)}초`
+  ) : "-"}
+</td>
               <td style={cellStyle}>
                 {r.times ? (
                  r.label === "순차" || r.label === "연습"

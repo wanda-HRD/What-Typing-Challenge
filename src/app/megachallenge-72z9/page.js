@@ -21,10 +21,10 @@ function ChallengeContent() {
   const name = searchParams.get("name");
 
   const prompts = [
-    "Why를 먼저 생각합니다.",
-    "더 합리적 방법을 고민합니다.",
-    "언제나 고객의 관점에서 생각합니다.",
-    "대화를 넘어 소통합니다."
+    "Why를 먼저 생각합니다. #배경이해 #목표설정 #방향성 점검",
+    "더 합리적 방법을 고민합니다. #다각적 고민 #관성적 업무 지양 #상황변화 인식",
+    "언제나 고객의 관점에서 생각합니다. #Attitude #숨겨진 니즈 #트렌드",
+    "대화를 넘어 소통합니다. #생각의 일치 #긍정적 표현 #대면 소통"
   ];
   const promptLabels = ["Why", "How", "Angle", "Talk"];
   const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다.");

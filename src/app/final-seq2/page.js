@@ -1,4 +1,4 @@
-// ✅ 추가된 부분 주석으로 표시
+// ✅ 파일 위치: src/app/final-seq1/page.js
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
@@ -8,15 +8,15 @@ import { collection, addDoc } from "firebase/firestore";
 import Image from "next/image";
 import "@/app/globals.css";
 
-export default function PracticeChallengePage() {
+export default function FinalSequential1() {
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
-      <ChallengeContent />
+      <FinalSequential1Content />
     </Suspense>
   );
 }
 
-function ChallengeContent() {
+function FinalSequential1Content() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const name = searchParams.get("name");
@@ -28,18 +28,19 @@ function ChallengeContent() {
     "대화를 넘어 소통합니다. #생각의 일치 #긍정적 표현 #대면 소통"
   ];
   const promptLabels = ["Why", "How", "Angle", "Talk"];
+
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [times, setTimes] = useState([]);
   const [isComplete, setIsComplete] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다."); // ✅ 추가됨
+  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다.");
 
   useEffect(() => {
-    const access = localStorage.getItem("practice-access");
+    const access = localStorage.getItem("final-access");
     if (!access) {
-      alert("연습 페이지 접근이 제한됩니다.");
+      alert("결승 페이지 접근이 제한됩니다.");
       router.replace("/practice-gate");
     }
   }, []);
@@ -73,7 +74,7 @@ function ChallengeContent() {
 
       if (currentPromptIndex === prompts.length - 1) {
         setIsComplete(true);
-        setPlaceholderText("↓↓ 나의 연습 결과는? ↓↓"); // ✅ 추가됨
+        setPlaceholderText("🎉 1차 완료! 다음 페이지로 이동하세요");
       } else {
         setCurrentPromptIndex(currentPromptIndex + 1);
       }
@@ -82,28 +83,31 @@ function ChallengeContent() {
 
   const handleResultSubmit = async () => {
     const totalTime = times.reduce((a, b) => a + b, 0).toFixed(2);
+
     await addDoc(collection(db, "records"), {
       name,
       time: parseFloat(totalTime),
       times,
       timestamp: new Date(),
-      isPractice: true,
-      hidden: true
+      label: "결승-순차2", // ✅ 변경된 라벨
     });
-    router.push(`/practice-mode/result?name=${encodeURIComponent(name)}`);
+
+    router.push(`/final-result2?name=${encodeURIComponent(name)}&time=${totalTime}`); // ✅ 결과2로 이동
   };
+
 
   return (
     <div className="challenge-wrapper">
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
         <Image
           src="/challenge-header.png"
-          alt="챌린지 제목"
+          alt="결승 2차 순차모드"
           width={600}
           height={250}
           className="challenge-header"
         />
 
+        {/* ✅ 제시문 출력 영역 */}
         <div className={`prompt-container prompt-${currentPromptIndex + 1}`}>
           <div className="prompt-text">
             {prompts[currentPromptIndex].split("").map((char, index) => {
@@ -118,20 +122,23 @@ function ChallengeContent() {
           </div>
         </div>
 
+        {/* ✅ 타이핑 입력창 */}
         <textarea
           value={userInput}
           onChange={handleInputChange}
-          placeholder={placeholderText} // ✅ 여기에 바인딩됨
+          placeholder={placeholderText}
           className="typing-area"
           disabled={isComplete}
         />
 
-        {times.map((_, idx) => (
+        {/* ✅ 제시문별 시간 표시 */}
+        {times.map((t, idx) => (
           <p key={idx} className="typing-time">
-            {promptLabels[idx]} ⏱ <b>??.??초</b>
+            {promptLabels[idx]} ⏱ {t.toFixed(2)}초
           </p>
         ))}
 
+        {/* ✅ 결과 버튼 */}
         {isComplete && (
           <button className="result-button" onClick={handleResultSubmit} />
         )}

@@ -1,22 +1,15 @@
-// ✅ 추가된 부분 주석으로 표시
-"use client";
+// ✅ 파일 위치: src/app/final-seq1/page.js
+"use client"; // 이거 꼭 맨 위에 위치!
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import Image from "next/image";
 import "@/app/globals.css";
 
-export default function PracticeChallengePage() {
-  return (
-    <Suspense fallback={<div>로딩 중...</div>}>
-      <ChallengeContent />
-    </Suspense>
-  );
-}
-
-function ChallengeContent() {
+// ✅ 그냥 이걸 바로 export 해도 충분함. Suspense 없어도 됨
+export default function FinalSequential1() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const name = searchParams.get("name");
@@ -28,18 +21,19 @@ function ChallengeContent() {
     "대화를 넘어 소통합니다. #생각의 일치 #긍정적 표현 #대면 소통"
   ];
   const promptLabels = ["Why", "How", "Angle", "Talk"];
+
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState(null);
   const [times, setTimes] = useState([]);
   const [isComplete, setIsComplete] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다."); // ✅ 추가됨
+  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다.");
 
   useEffect(() => {
-    const access = localStorage.getItem("practice-access");
+    const access = localStorage.getItem("final-access");
     if (!access) {
-      alert("연습 페이지 접근이 제한됩니다.");
+      alert("결승 페이지 접근이 제한됩니다.");
       router.replace("/practice-gate");
     }
   }, []);
@@ -73,7 +67,7 @@ function ChallengeContent() {
 
       if (currentPromptIndex === prompts.length - 1) {
         setIsComplete(true);
-        setPlaceholderText("↓↓ 나의 연습 결과는? ↓↓"); // ✅ 추가됨
+        setPlaceholderText("🎉 1차 완료! 다음 페이지로 이동하세요");
       } else {
         setCurrentPromptIndex(currentPromptIndex + 1);
       }
@@ -87,10 +81,10 @@ function ChallengeContent() {
       time: parseFloat(totalTime),
       times,
       timestamp: new Date(),
-      isPractice: true,
-      hidden: true
+      label: "결승-순차1",
     });
-    router.push(`/practice-mode/result?name=${encodeURIComponent(name)}`);
+
+    router.push(`/final-result1?name=${encodeURIComponent(name)}&time=${totalTime}`);
   };
 
   return (
@@ -98,7 +92,7 @@ function ChallengeContent() {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
         <Image
           src="/challenge-header.png"
-          alt="챌린지 제목"
+          alt="결승 1차 순차모드"
           width={600}
           height={250}
           className="challenge-header"
@@ -121,14 +115,14 @@ function ChallengeContent() {
         <textarea
           value={userInput}
           onChange={handleInputChange}
-          placeholder={placeholderText} // ✅ 여기에 바인딩됨
+          placeholder={placeholderText}
           className="typing-area"
           disabled={isComplete}
         />
 
-        {times.map((_, idx) => (
+        {times.map((t, idx) => (
           <p key={idx} className="typing-time">
-            {promptLabels[idx]} ⏱ <b>??.??초</b>
+            {promptLabels[idx]} ⏱ {t.toFixed(2)}초
           </p>
         ))}
 

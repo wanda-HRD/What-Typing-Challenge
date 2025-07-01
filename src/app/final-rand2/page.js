@@ -1,45 +1,50 @@
-// ✅ 추가된 부분 주석으로 표시
+// ✅ 파일 위치: src/app/final-rand2/page.js
 "use client";
 
+import "@/app/globals.css";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import Image from "next/image";
-import "@/app/globals.css";
 
-export default function PracticeChallengePage() {
+export default function FinalRand2() {
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
-      <ChallengeContent />
+      <FinalRand2Content />
     </Suspense>
   );
 }
 
-function ChallengeContent() {
+function FinalRand2Content() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const name = searchParams.get("name");
 
-  const prompts = [
-    "Why를 먼저 생각합니다. #배경이해 #목표설정 #방향성 점검",
-    "더 합리적 방법을 고민합니다. #다각적 고민 #관성적 업무 지양 #상황변화 인식",
-    "언제나 고객의 관점에서 생각합니다. #Attitude #숨겨진 니즈 #트렌드",
-    "대화를 넘어 소통합니다. #생각의 일치 #긍정적 표현 #대면 소통"
-  ];
-  const promptLabels = ["Why", "How", "Angle", "Talk"];
-  const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
+  // ✅ 고정 제시문 (Angle)
+  const selectedPrompt =
+    "언제나 고객의 관점에서 생각합니다. 고객의 니즈를 내 필요처럼 느끼고 조금이라도 더 개선하려는 태도로 일합니다. 내게 필요한 서비스라는 마음으로 더 나은 서비스를 위해 적극적으로 임합니다. 표면적 현상 그 이상을 고민하고 숨겨진 니즈를 찾아 제시합니다. 트렌드에 관심을 갖고 지속적으로 변화를 시도합니다.";
+  const selectedPromptLabel = "Angle";
+
+  // ✅ label → 숫자 매핑
+  const promptIndexMap = {
+    Why: 1,
+    How: 2,
+    Angle: 3,
+    Talk: 4,
+  };
+
   const [userInput, setUserInput] = useState("");
   const [startTime, setStartTime] = useState(null);
-  const [times, setTimes] = useState([]);
+  const [time, setTime] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다."); // ✅ 추가됨
+  const [placeholderText, setPlaceholderText] = useState("여기에 입력하세요. 타이핑 시작과 동시에 시간이 카운팅 됩니다.");
 
   useEffect(() => {
-    const access = localStorage.getItem("practice-access");
+    const access = localStorage.getItem("final-access");
     if (!access) {
-      alert("연습 페이지 접근이 제한됩니다.");
+      alert("결승 페이지 접근이 제한됩니다.");
       router.replace("/practice-gate");
     }
   }, []);
@@ -64,33 +69,27 @@ function ChallengeContent() {
 
     setUserInput(value);
 
-    if (value === prompts[currentPromptIndex]) {
+    if (value === selectedPrompt) {
       const timeTaken = ((Date.now() - startTime) / 1000).toFixed(2);
-      const updatedTimes = [...times, parseFloat(timeTaken)];
-      setTimes(updatedTimes);
+      setTime(parseFloat(timeTaken));
       setUserInput("");
       setStartTime(null);
-
-      if (currentPromptIndex === prompts.length - 1) {
-        setIsComplete(true);
-        setPlaceholderText("↓↓ 나의 연습 결과는? ↓↓"); // ✅ 추가됨
-      } else {
-        setCurrentPromptIndex(currentPromptIndex + 1);
-      }
+      setIsComplete(true);
+      setPlaceholderText("🎉 입력 완료! 결과 확인으로 이동하세요");
     }
   };
 
   const handleResultSubmit = async () => {
-    const totalTime = times.reduce((a, b) => a + b, 0).toFixed(2);
     await addDoc(collection(db, "records"), {
       name,
-      time: parseFloat(totalTime),
-      times,
+      time,
+      times: [time],
+      promptLabel: selectedPromptLabel,
       timestamp: new Date(),
-      isPractice: true,
-      hidden: true
+      label: "결승-랜덤2",
     });
-    router.push(`/practice-mode/result?name=${encodeURIComponent(name)}`);
+
+    router.push(`/final-result4?name=${encodeURIComponent(name)}&time=${time}`);
   };
 
   return (
@@ -98,15 +97,16 @@ function ChallengeContent() {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "20px" }}>
         <Image
           src="/challenge-header.png"
-          alt="챌린지 제목"
+          alt="결승 랜덤2"
           width={600}
           height={250}
           className="challenge-header"
         />
 
-        <div className={`prompt-container prompt-${currentPromptIndex + 1}`}>
+        {/* ✅ prompt-3 클래스 자동 적용 */}
+        <div className={`prompt-container prompt-${promptIndexMap[selectedPromptLabel]}`}>
           <div className="prompt-text">
-            {prompts[currentPromptIndex].split("").map((char, index) => {
+            {selectedPrompt.split("").map((char, index) => {
               let color = "black";
               if (index < userInput.length) {
                 color = userInput[index] === char ? "green" : "red";
@@ -121,16 +121,14 @@ function ChallengeContent() {
         <textarea
           value={userInput}
           onChange={handleInputChange}
-          placeholder={placeholderText} // ✅ 여기에 바인딩됨
+          placeholder={placeholderText}
           className="typing-area"
           disabled={isComplete}
         />
 
-        {times.map((_, idx) => (
-          <p key={idx} className="typing-time">
-            {promptLabels[idx]} ⏱ <b>??.??초</b>
-          </p>
-        ))}
+        {time && (
+          <p className="typing-time">{selectedPromptLabel} ⏱ {time.toFixed(2)}초</p>
+        )}
 
         {isComplete && (
           <button className="result-button" onClick={handleResultSubmit} />

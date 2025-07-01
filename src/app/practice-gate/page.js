@@ -15,6 +15,9 @@ export default function PracticeGatePage() {
     } else if (password === "challenge2025") {
       localStorage.setItem("access-granted", "true");
       router.push("/supermain-2025-w9s8d");
+      } else if (password === "final2025") {
+  localStorage.setItem("final-access", "true"); // ✅ 로컬스토리지 저장
+  router.push("/final-mode"); // ✅ 결승모드 진입 페이지
     } else {
       alert("비밀번호가 틀렸습니다.");
     }
