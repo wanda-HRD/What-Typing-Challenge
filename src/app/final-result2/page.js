@@ -1,10 +1,8 @@
 // ✅ 파일 위치: src/app/final-result1/page.js
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import "@/app/globals.css";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function FinalResult1() {
   const searchParams = useSearchParams();
