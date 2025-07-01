@@ -1,12 +1,12 @@
 // ✅ 파일 위치: src/app/final-seq1/page.js
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { db } from "@/firebase";
-import { collection, addDoc } from "firebase/firestore";
-import Image from "next/image";
 import "@/app/globals.css";
+import { db } from "@/firebase";
+import { addDoc, collection } from "firebase/firestore";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 export default function FinalSequential1() {
   return (
