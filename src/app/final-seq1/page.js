@@ -1,15 +1,23 @@
 // ✅ 파일 위치: src/app/final-seq1/page.js
-"use client"; // 이거 꼭 맨 위에 위치!
+"use client";
+export const dynamic = "force-dynamic";
 
-import { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { db } from "@/firebase";
-import { collection, addDoc } from "firebase/firestore";
-import Image from "next/image";
 import "@/app/globals.css";
+import { db } from "@/firebase";
+import { addDoc, collection } from "firebase/firestore";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
 
-// ✅ 그냥 이걸 바로 export 해도 충분함. Suspense 없어도 됨
-export default function FinalSequential1() {
+export default function FinalSequential1Wrapper() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <FinalSequential1 />
+    </Suspense>
+  );
+}
+
+function FinalSequential1() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const name = searchParams.get("name");
@@ -36,7 +44,7 @@ export default function FinalSequential1() {
       alert("결승 페이지 접근이 제한됩니다.");
       router.replace("/practice-gate");
     }
-  }, []);
+  }, [router]);
 
   const handleInputChange = (e) => {
     if (isComplete) return;

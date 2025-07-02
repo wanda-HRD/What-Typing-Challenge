@@ -1,5 +1,6 @@
-// ✅ 파일 위치: src/app/final-seq1/page.js
+// ✅ 파일 위치: src/app/final-seq2/page.js
 "use client";
+export const dynamic = "force-dynamic";
 
 import "@/app/globals.css";
 import { db } from "@/firebase";
@@ -8,15 +9,15 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-export default function FinalSequential1() {
+export default function FinalSequential2Wrapper() {
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
-      <FinalSequential1Content />
+      <FinalSequential2Content />
     </Suspense>
   );
 }
 
-function FinalSequential1Content() {
+function FinalSequential2Content() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const name = searchParams.get("name");
@@ -43,7 +44,7 @@ function FinalSequential1Content() {
       alert("결승 페이지 접근이 제한됩니다.");
       router.replace("/practice-gate");
     }
-  }, []);
+  }, [router]);
 
   const handleInputChange = (e) => {
     if (isComplete) return;
@@ -89,12 +90,11 @@ function FinalSequential1Content() {
       time: parseFloat(totalTime),
       times,
       timestamp: new Date(),
-      label: "결승-순차2", // ✅ 변경된 라벨
+      label: "결승-순차2", // ✅ 라벨 주의
     });
 
-    router.push(`/final-result2?name=${encodeURIComponent(name)}&time=${totalTime}`); // ✅ 결과2로 이동
+    router.push(`/final-result2?name=${encodeURIComponent(name)}&time=${totalTime}`);
   };
-
 
   return (
     <div className="challenge-wrapper">
@@ -107,7 +107,6 @@ function FinalSequential1Content() {
           className="challenge-header"
         />
 
-        {/* ✅ 제시문 출력 영역 */}
         <div className={`prompt-container prompt-${currentPromptIndex + 1}`}>
           <div className="prompt-text">
             {prompts[currentPromptIndex].split("").map((char, index) => {
@@ -122,7 +121,6 @@ function FinalSequential1Content() {
           </div>
         </div>
 
-        {/* ✅ 타이핑 입력창 */}
         <textarea
           value={userInput}
           onChange={handleInputChange}
@@ -131,14 +129,12 @@ function FinalSequential1Content() {
           disabled={isComplete}
         />
 
-        {/* ✅ 제시문별 시간 표시 */}
         {times.map((t, idx) => (
           <p key={idx} className="typing-time">
             {promptLabels[idx]} ⏱ {t.toFixed(2)}초
           </p>
         ))}
 
-        {/* ✅ 결과 버튼 */}
         {isComplete && (
           <button className="result-button" onClick={handleResultSubmit} />
         )}
