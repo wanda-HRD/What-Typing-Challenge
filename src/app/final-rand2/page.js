@@ -1,12 +1,12 @@
 // ✅ 파일 위치: src/app/final-rand2/page.js
 "use client";
-
+export const dynamic = "force-dynamic";
 import "@/app/globals.css";
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import { db } from "@/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 export default function FinalRand2() {
   return (
