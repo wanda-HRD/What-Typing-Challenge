@@ -1,12 +1,13 @@
 // ✅ 파일 위치: src/app/final-result3/page.js
-export const dynamic = "force-dynamic";
 "use client";
 
+export const dynamic = "force-dynamic";
 
-import "@/app/globals.css";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import "@/app/globals.css";
 
-export default function FinalResult3() {
+function FinalResult3Content() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -21,22 +22,15 @@ export default function FinalResult3() {
   return (
     <div className="results-wrapper">
       <div className="results-layout">
-
-         {/* ✅ 시간 크게 보여주기 */}
         <p style={{ fontSize: "150px", fontWeight: "bold", marginBottom: "10px", color: "#00777a" }}>
           {time ? time.toFixed(2) : "--"}<span style={{ fontSize: "50px", marginLeft: "6px" }}>초</span>
         </p>
-
-        {/* ✅ 이름 및 설명 */}
         <p style={{ fontSize: "50px", fontWeight: "bold", marginBottom: "8px" }}>
           {trimmedName} 님의 Round2 1차 기록입니다!
         </p>
-
         <p style={{ fontSize: "32px", color: "#444", marginBottom: "24px" }}>
           Round2 2차 시도가 이어집니다.
         </p>
-
-        {/* ✅ 버튼 */}
         <button
           onClick={handleNext}
           style={{
@@ -53,5 +47,13 @@ export default function FinalResult3() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function FinalResult3() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <FinalResult3Content />
+    </Suspense>
   );
 }
