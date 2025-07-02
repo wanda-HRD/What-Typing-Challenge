@@ -3,10 +3,10 @@
 import "@/app/globals.css";
 import { useRouter, useSearchParams } from "next/navigation";
 
+export const dynamic = "force-dynamic";
 export default function FinalResult1() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const name = searchParams.get("name");
   const time = parseFloat(searchParams.get("time"));
   const trimmedName = name && name.length > 6 ? name.slice(0, 6) + "…" : name;
