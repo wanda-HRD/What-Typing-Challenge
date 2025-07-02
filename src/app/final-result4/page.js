@@ -2,11 +2,11 @@
 "use client";
 
 import "@/app/globals.css";
+import { useSearchParams } from "next/navigation"; // ✅ 누락된 import 추가!
 
 
 export default function FinalResult4() {
   const searchParams = useSearchParams();
-
   const name = searchParams.get("name");
   const time = parseFloat(searchParams.get("time"));
   const trimmedName = name && name.length > 6 ? name.slice(0, 6) + "…" : name;
