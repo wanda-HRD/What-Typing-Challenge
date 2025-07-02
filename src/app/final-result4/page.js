@@ -1,6 +1,7 @@
 // ✅ 파일 위치: src/app/final-result4/page.js
-"use client";
 export const dynamic = "force-dynamic";
+"use client";
+
 
 import "@/app/globals.css";
 import { useSearchParams } from "next/navigation"; // ✅ 누락된 import 추가!

@@ -1,5 +1,7 @@
 // ✅ 파일 위치: src/app/final-result3/page.js
+export const dynamic = "force-dynamic";
 "use client";
+
 
 import "@/app/globals.css";
 import { useRouter, useSearchParams } from "next/navigation";
