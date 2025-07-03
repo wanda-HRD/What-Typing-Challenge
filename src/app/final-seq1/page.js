@@ -75,7 +75,7 @@ function FinalSequential1() {
 
       if (currentPromptIndex === prompts.length - 1) {
         setIsComplete(true);
-        setPlaceholderText("🎉 1차 완료!");
+        setPlaceholderText("🎉 1차 완료! MC의 진행에 따라 이동해주세요.");
       } else {
         setCurrentPromptIndex(currentPromptIndex + 1);
       }
@@ -90,6 +90,7 @@ function FinalSequential1() {
       times,
       timestamp: new Date(),
       label: "결승-순차1",
+      promptLabel: null,     // ✅ 이 줄 추가로 랜덤모드 로직 막기
     });
 
     router.push(`/final-result1?name=${encodeURIComponent(name)}&time=${totalTime}`);

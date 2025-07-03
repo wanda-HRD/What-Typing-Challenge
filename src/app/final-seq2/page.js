@@ -91,6 +91,7 @@ function FinalSequential2Content() {
       times,
       timestamp: new Date(),
       label: "결승-순차2", // ✅ 라벨 주의
+      promptLabel: null,     // ✅ 이 줄 추가로 랜덤모드 로직 막기
     });
 
     router.push(`/final-result2?name=${encodeURIComponent(name)}&time=${totalTime}`);
