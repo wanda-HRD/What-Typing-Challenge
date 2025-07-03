@@ -89,7 +89,7 @@ function FinalSequential1() {
       time: parseFloat(totalTime),
       times,
       timestamp: new Date(),
-      label: "결승-순차1",
+      label: "순차",
       promptLabel: null,     // ✅ 이 줄 추가로 랜덤모드 로직 막기
     });
 

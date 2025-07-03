@@ -90,7 +90,7 @@ function FinalSequential2Content() {
       time: parseFloat(totalTime),
       times,
       timestamp: new Date(),
-      label: "결승-순차2", // ✅ 라벨 주의
+      label: "순차", // ✅ 라벨 주의
       promptLabel: null,     // ✅ 이 줄 추가로 랜덤모드 로직 막기
     });
 
