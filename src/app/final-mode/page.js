@@ -54,13 +54,13 @@ export default function FinalModeMain() {
           <p style={{ marginTop: "20px", fontSize: "16px", color: "white", fontWeight: "bold" }}>
             * 지금부터 결승전! 총 4번의 타이핑을 시작합니다 🔥
           </p>
-          <p>
+           <p style={{ marginTop: "20px", fontSize: "16px", color: "white", fontWeight: "bold" }}>
             * MC의 진행에 따라 챌린지를 진행해주세요.
           </p>
-          <p>
+           <p style={{ marginTop: "20px", fontSize: "16px", color: "white", fontWeight: "bold" }}>
             * 새로고침 이용 시 해당 라운드 점수는 0점 처리 됩니다.
           </p>
-          <p>
+           <p style={{ marginTop: "20px", fontSize: "16px", color: "white", fontWeight: "bold" }}>
             * 타이핑을 완료하고 Enter키를 누르지 않도록 주의해주세요!
           </p>
         </div>
