@@ -75,7 +75,7 @@ function FinalSequential2Content() {
 
       if (currentPromptIndex === prompts.length - 1) {
         setIsComplete(true);
-        setPlaceholderText("🎉 1차 완료! 다음 페이지로 이동하세요");
+        setPlaceholderText("🎉 2차 완료! MC의 진행에 따라 이동해주세요.");
       } else {
         setCurrentPromptIndex(currentPromptIndex + 1);
       }

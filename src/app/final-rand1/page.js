@@ -75,7 +75,7 @@ function FinalRand1Content() {
       setUserInput("");
       setStartTime(null);
       setIsComplete(true);
-      setPlaceholderText("🎉 입력 완료! 결과 확인으로 이동하세요");
+      setPlaceholderText("🎉 입력 완료! MC의 진행에 따라 이동해주세요");
     }
   };
 

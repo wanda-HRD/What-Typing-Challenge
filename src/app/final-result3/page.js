@@ -26,10 +26,10 @@ function FinalResult3Content() {
           {time ? time.toFixed(2) : "--"}<span style={{ fontSize: "50px", marginLeft: "6px" }}>초</span>
         </p>
         <p style={{ fontSize: "50px", fontWeight: "bold", marginBottom: "8px" }}>
-          {trimmedName} 님의 Round2 1차 기록입니다!
+          {trimmedName} 님의 Round2 - 1차 기록입니다!
         </p>
         <p style={{ fontSize: "32px", color: "#444", marginBottom: "24px" }}>
-          Round2 2차 시도가 이어집니다.
+          Round2 - 2차 시도가 이어집니다.
         </p>
         <button
           onClick={handleNext}

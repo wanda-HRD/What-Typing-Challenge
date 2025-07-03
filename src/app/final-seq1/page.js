@@ -75,7 +75,7 @@ function FinalSequential1() {
 
       if (currentPromptIndex === prompts.length - 1) {
         setIsComplete(true);
-        setPlaceholderText("🎉 1차 완료! 다음 페이지로 이동하세요");
+        setPlaceholderText("🎉 1차 완료!");
       } else {
         setCurrentPromptIndex(currentPromptIndex + 1);
       }

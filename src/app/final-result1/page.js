@@ -24,7 +24,10 @@ function FinalResult1Content() {
           {time ? time.toFixed(2) : "--"}<span style={{ fontSize: "50px", marginLeft: "6px" }}>초</span>
         </p>
         <p style={{ fontSize: "50px", fontWeight: "bold", marginBottom: "8px" }}>
-          {trimmedName} 님의 Round1 1차 기록입니다!
+          {trimmedName} 님의 Round 1 - 1차 기록입니다!
+        </p>
+        <p style={{ fontSize: "32px", color: "#444", marginBottom: "24px" }}>
+          MC의 진행에 따라 이동해주세요.
         </p>
         <p style={{ fontSize: "32px", color: "#444", marginBottom: "24px" }}>
           Round1 2차 시도가 이어집니다.

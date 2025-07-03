@@ -27,7 +27,7 @@ function FinalResult2Content() {
           <span style={{ fontSize: "50px", marginLeft: "6px" }}>초</span>
         </p>
         <p style={{ fontSize: "50px", fontWeight: "bold", marginBottom: "8px" }}>
-          {trimmedName} 님의 Round 1 2차 기록입니다!
+          {trimmedName} 님의 Round 1 - 2차 기록입니다!
         </p>
         <p style={{ fontSize: "32px", color: "#444", marginBottom: "24px" }}>
           Round2 랜덤모드가 이어집니다.
